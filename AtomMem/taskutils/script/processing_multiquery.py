@@ -127,9 +127,8 @@ def generate_dataset(num_samples: int, save_dir: str, incremental: int = 10, qas
     from utils import TqdmExecutor
     random_chunk = generate_random_chunks(num_samples)
     write_jsons = TqdmExecutor(max_workers=os.cpu_count()).run(generate_input_output, random_chunk, num_docs=incremental)
-    write_jsons = write_jsons[:10]
     df = pd.DataFrame(write_jsons)
-    df.to_parquet(save_dir + ".parquet")
+    df.to_parquet(save_dir)
     return write_jsons
 
 def main(args):
@@ -153,7 +152,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--data_file",
         type=str,
-        default="2wikimultihop_train.json",
+        required=True,
         help="Path to the training dataset",
     )
 
@@ -167,7 +166,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--output",
         type=str,
-        default="2wiki_multiquery_train",
+        required=True,
         help="Output name for training set",
     )
     parser.add_argument(

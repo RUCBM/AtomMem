@@ -1,7 +1,6 @@
 # AtomMem : Learnable Dynamic Agentic Memory with Atomic Memory Operation
 > This repo is the official code implementation of **AtomMem : Learnable Dynamic Agentic Memory with Atomic Memory Operation** <br>
 > [[arXiv]](https://arxiv.org/abs/2601.08323) <br>
-> **Yupeng Huo, Yaxi Lu, Zhongzhang, Haotian Chen, Yankai Lin**
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
 [![Python](https://img.shields.io/badge/python-3.11%2B-blue)](https://www.python.org/)
@@ -44,4 +43,21 @@ Place the dataset under the **taskutils/memory_data** directory, organized in th
 ./AtomMem/taskutils/script/HotpotQA.sh
 ./AtomMem/taskutils/script/2Wiki.sh
 ./AtomMem/taskutils/script/Musique.sh
+```
+
+### Inference
+
+**1.** download our model from huggingface or modelscope
+```
+(The URL has been anonymized.)
+```
+
+**2.** start the vllm service on port 8001
+```
+
+```
+
+**3.** run the following script to inference on our tasks
+```
+
 ```

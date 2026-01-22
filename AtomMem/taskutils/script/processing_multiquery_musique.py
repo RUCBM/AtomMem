@@ -18,6 +18,7 @@ from multiprocessing import Pool
 from transformers import AutoTokenizer
 import pandas as pd
 from pathlib import Path
+import argparse
 
 # Global variables
 QAS = None
@@ -165,18 +166,57 @@ def generate_dataset(num_samples: int, save_dir: str, incremental: int = 10, qas
     df.to_parquet(save_dir + ".parquet")
     return write_jsons
 
-if __name__ == "__main__":
-    random.seed(42)
-    
-    # QAS_train, DOCS_train = read_hotpotqa('musique_ans_v1.0_train.jsonl')
-    # generate_dataset(10000, 'musique_multiquery_train', 200, QAS_train, DOCS_train)
-    QAS_dev, DOCS_dev = read_hotpotqa('musique_ans_v1.0_dev.jsonl')
-    generate_dataset(1000, 'musique_multiquery_dev_400', 400, QAS_dev, DOCS_dev)
+def main(args):
+    random.seed(args.seed)
 
-# if __name__ == "__main__":
-    # random.seed(42)
-    
-    # QAS_train, DOCS_train = read_hotpotqa('2wikimultihop_train.json')
-    # generate_dataset(10000, '2wikimultihop_train_process', 200, QAS_train, DOCS_train)
-    # QAS_dev, DOCS_dev = read_hotpotqa('2wikimultihop_dev.json')
-    # generate_dataset(200, '2wikimultihop_dev_process', 200, QAS_dev, DOCS_dev)
+    # Train set
+    QAS_train, DOCS_train = read_hotpotqa(args.data_file)
+    generate_dataset(
+        args.data_size,
+        args.output,
+        args.doc_num,
+        QAS_train,
+        DOCS_train,
+    )
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(
+        description="Generate multi-query dataset from Musique"
+    )
+
+    parser.add_argument(
+        "--data_file",
+        type=str,
+        required=True,
+        help="Path to the training dataset",
+    )
+
+    parser.add_argument(
+        "--data_size",
+        type=int,
+        default=20000,
+        help="Number of training samples to generate",
+    )
+
+    parser.add_argument(
+        "--output",
+        type=str,
+        required=True,
+        help="Output name for training set",
+    )
+    parser.add_argument(
+        "--doc_num",
+        type=int,
+        default=200,
+        help="Maximum number of documents per sample",
+    )
+
+    parser.add_argument(
+        "--seed",
+        type=int,
+        default=42,
+        help="Random seed",
+    )
+
+    args = parser.parse_args()
+    main(args)
