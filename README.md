@@ -1,6 +1,6 @@
 # AtomMem : Learnable Dynamic Agentic Memory with Atomic Memory Operation
 > This repo is the official code implementation of **AtomMem : Learnable Dynamic Agentic Memory with Atomic Memory Operation** <br>
-> [[arXiv]](https://arxiv.org/abs/2601.08323) <br>
+<!-- > [[arXiv]](https://arxiv.org/abs/2601.08323) <br> -->
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
 [![Python](https://img.shields.io/badge/python-3.11%2B-blue)](https://www.python.org/)
@@ -16,7 +16,7 @@ We introduce **AtomMem**, a dynamic memory framework that reframes memory manage
 
 #### clone repository
 ```
-git clone https://github.com/your-org/AtomMem.git
+git clone (The URL has been anonymized.)
 cd AtomMem
 ```
 
@@ -54,7 +54,7 @@ Place the dataset under the **taskutils/memory_data** directory, organized in th
 
 **2.** start the vllm service on port 8001
 ```
-
+vllm serve your_model_path --served_model_name AtomMem --port 8001
 ```
 
 **3.** run the following script to inference on our tasks
