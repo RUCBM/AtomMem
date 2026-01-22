@@ -3,7 +3,7 @@ from contextlib import contextmanager
 from typing import Dict, List, Tuple, Type
 
 import sys
-sys.path.append('/home/test/test03/huoyupeng/MemAgent/MemAgent-main')
+sys.path.append('../../..')
 
 import torch
 from codetiming import Timer

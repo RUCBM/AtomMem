@@ -1,9 +1,9 @@
 #!/bin/bash
 set -euo pipefail
 
-DATASET_ROOT=/nfsdata/huoyupeng/Memory_Agent
+DATASET_ROOT=
 
-MODEL_PATH=/nfsdata/huoyupeng/Memory_Agent/taskutils/memory_model/Qwen3-8B_distill_deepseek_v3.2
+MODEL_PATH=
 
 VLLM_PORT=9007
 
@@ -20,7 +20,7 @@ done
 
 # ======== hotpotqa ============== 
 # ========= hotpotqa 200doc ===========
-python3 -X faulthandler -m eval.memory_agent.hotpotqa.eval \
+python3 -X faulthandler -m script.eval.eval \
     recurrent.enable=memory \
     recurrent.memory.config.chunk_size=4000 \
     recurrent.memory.config.max_chunks=40 \
@@ -34,6 +34,6 @@ python3 -X faulthandler -m eval.memory_agent.hotpotqa.eval \
     data.truncation='center' \
     actor_rollout_ref.model.path=$MODEL_PATH  \
     reward_model.reward_manager='thread_agent' \
-    +log_path='/nfsdata/huoyupeng/Memory_Agent/eval/memory_agent/hotpotqa/memory_agent_rl_hotpotqa_200doc_filter.txt' \
-    +model_name="memory_agent" \
+    +log_path='' \
+    +model_name="AtomMem" \
     +base_url="http://localhost:8001/v1/"

@@ -7,11 +7,11 @@
 
 ⭐️ Please star this repository if you find it helpful!
 
-## Overview
+## 👀Overview
 ![main architecture of AtomMem](./assets/main_figure.png)
 We introduce **AtomMem**, a dynamic memory framework that reframes memory management as a learnable decision-making problem. Instead of relying on predefined pipelines, AtomMem decomposes memory manipulation into **atomic CRUD operations**—Create, Read, Update, and Delete—and trains the agent to decide when and how to invoke these operations based on task context.
 
-## Quick Start
+## 🧩Quick Start
 ### Environment Preparation 
 
 #### clone repository
