@@ -2,11 +2,10 @@
 set -x
 
 DATASET_ROOT=./AtomMem/
-export RAY_TMPDIR=/nfsdata/huoyupeng/ray_tmp
 
-MODEL_PATH="/nfsdata/models/Qwen3-8B"
-VAL_PATH="${DATASET_ROOT}/taskutils/memory_data/musique_multiquery_sft.parquet"
-TRAIN_PATH="${DATASET_ROOT}/taskutils/memory_data/musique_multiquery_sft.parquet"
+MODEL_PATH=""
+VAL_PATH=""
+TRAIN_PATH=""
 WRITE_PATH="${DATASET_ROOT}/SFT/data/SFT_test.jsonl"
 LOG_PATH="${DATASET_ROOT}/log/test.json"
 VLLM_PORT=9007
