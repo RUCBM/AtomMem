@@ -30,15 +30,15 @@ PYTHONUNBUFFERED=1
 until curl -s "http://localhost:${VLLM_PORT}/v1/models" | grep -q "qwen3-embedding"; do
   ATTEMPT=$((ATTEMPT+1))
   if [ $ATTEMPT -ge 30 ]; then
-    echo "[ERROR] vLLM 启动失败"
+    echo "[ERROR] Failed to start vLLM service."
     kill $VLLM_PID
     exit 1
   fi
-  echo "[WAIT] 第 $ATTEMPT 次尝试连接 vLLM 中..."
+  echo "[WAIT] Attempt ${ATTEMPT}: waiting for vLLM to become available..."
   sleep 10
 done
 
-echo "vLLM 服务已就绪。启动训练任务。"
+echo "vLLM service is ready. Launching the training job."
 
 python3 -X faulthandler -m verl.trainer.main_ppo \
     recurrent.enable=memory \
