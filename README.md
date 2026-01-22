@@ -24,6 +24,7 @@ cd AtomMem
 ```
 pip install -r requirements.txt
 ```
+**Note:** If you plan to run training, please ensure that the vLLM version is **below 0.9.2**. Otherwise, on an 8-GPU server, the embedding model will occupy an entire GPU, leaving only 7 GPUs available for training.
 
 ### Data Preparation
 
@@ -52,12 +53,46 @@ Place the dataset under the **taskutils/memory_data** directory, organized in th
 (The URL has been anonymized.)
 ```
 
-**2.** start the vllm service on port 8001
+**2.** start the AtomMem vllm service on port 8001
 ```
 vllm serve your_model_path --served_model_name AtomMem --port 8001
 ```
 
-**3.** run the following script to inference on our tasks
+**3.** start the embedding vllm service on port 9007
+```
+vllm serve your_embedding_model_path --served_model_name qwen3-embedding --task_embed --port 9007
 ```
 
+**4.** run the following script to inference on our tasks
+```
+./script/eval/run_eval.sh
+```
+
+### Supervised Fine-Tuning
+
+**1.** run the inference script to collect trajectory from stronger model
+```
+./SFT/inference_script/run_sft_inference.sh
+```
+
+**2.** Run the training script to perform SFT using the TRL library
+```
+./SFT/train_script/run.sh
+```
+
+**3.** convert the format of checkpoint from .pt to .safetensor
+```
+./SFT/train_script/convert.sh
+```
+
+### Reinforcement Learning
+We build upon Verl v0.2.0 and extend the framework to support multi-turn reinforcement learning. The core components are organized as follows:
+```
+|- recurrent   (implementation of the agent)
+|- verl        (RL algorithms and training pipeline)
+```
+
+To quickly run RL training, please execute the following script:
+```
+./script/train/run_memory_longcontext.sh
 ```
