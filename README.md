@@ -19,9 +19,16 @@ We introduce **AtomMem**, a dynamic memory framework that reframes memory manage
 git clone (The URL has been anonymized.)
 cd AtomMem
 ```
+#### create a new environment (optional)
+```
+conda create -n AtomMem python=3.11
+conda activate AtomMem
+```
 
 #### install dependencies
 ```
+pip install torch
+pip install xformers --no-build-isolation
 pip install -r requirements.txt
 ```
 **Note:** If you plan to run training, please ensure that the vLLM version is **below 0.9.2**. Otherwise, on an 8-GPU server, the embedding model will occupy an entire GPU, leaving only 7 GPUs available for training.
