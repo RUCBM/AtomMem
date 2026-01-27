@@ -1,8 +1,0 @@
-[2026-01-27 11:36:52,458][faiss.loader][INFO] - Loading faiss with AVX2 support.
-[2026-01-27 11:36:52,538][faiss.loader][INFO] - Successfully loaded faiss with AVX2 support.
-[2026-01-27 11:36:53,552][/nfsdata/huoyupeng/AtomMem/AtomMem/recurrent/impls/memory_long_short_multiquery.py][INFO] - 
-[RECURRENT] max_input_length: = 16288
-
-[2026-01-27 11:36:53,553][/nfsdata/huoyupeng/AtomMem/AtomMem/recurrent/impls/memory_long_short_multiquery.py][INFO] - chunk_size: 4000
-[2026-01-27 11:37:01,260][/nfsdata/huoyupeng/AtomMem/AtomMem/verl/workers/reward_manager/thread_agent.py][INFO] - node 0 resources={'CPU': 128.0, 'node:172.16.1.37': 1.0, 'GPU': 8.0, 'object_store_memory': 200000000000.0, 'accelerator_type:A800': 1.0, 'memory': 761451094016.0, 'node:__internal_head__': 1.0}
-[2026-01-27 11:37:01,499][/nfsdata/huoyupeng/AtomMem/AtomMem/verl/workers/reward_manager/thread_agent.py][INFO] - App created
