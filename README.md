@@ -16,7 +16,7 @@ We introduce **AtomMem**, a dynamic memory framework that reframes memory manage
 
 #### clone repository
 ```
-git clone (The URL has been anonymized.)
+git clone https://github.com/RUCBM/AtomMem.git
 cd AtomMem/AtomMem
 ```
 #### create a new environment (optional)
