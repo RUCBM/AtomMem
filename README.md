@@ -1,6 +1,6 @@
 # AtomMem : Learnable Dynamic Agentic Memory with Atomic Memory Operation
 > This repo is the official code implementation of **AtomMem : Learnable Dynamic Agentic Memory with Atomic Memory Operation** <br>
-<!-- > [[arXiv]](https://arxiv.org/abs/2601.08323) <br> -->
+> [[arXiv]](https://arxiv.org/abs/2601.08323) [[model]](https://huggingface.co/Yupeng123/AtomMem-8B)
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
 [![Python](https://img.shields.io/badge/python-3.11%2B-blue)](https://www.python.org/)
@@ -17,7 +17,7 @@ We introduce **AtomMem**, a dynamic memory framework that reframes memory manage
 #### clone repository
 ```
 git clone (The URL has been anonymized.)
-cd AtomMem
+cd AtomMem/AtomMem
 ```
 #### create a new environment (optional)
 ```
@@ -55,7 +55,7 @@ Place the dataset under the **taskutils/memory_data** directory, organized in th
 
 **1.** download our model from huggingface or modelscope
 ```
-(The URL has been anonymized.)
+huggingface-cli download Yupeng123/AtomMem-8B --local-dir ./AtomMem-8B
 ```
 
 **2.** start the AtomMem vllm service on port 8001
