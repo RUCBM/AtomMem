@@ -408,7 +408,7 @@ class MemoryAgent(RAgent):
         del self.ctx_length
         del self.meta_info
         del self.messages
-        self.dump_vectorstore("./AtomMem/dataset.txt")
+        # self.dump_vectorstore("./AtomMem/dataset.txt")
         del self.vectorstore
         del self.faiss_index
         del self.query

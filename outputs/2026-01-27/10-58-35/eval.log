@@ -1,0 +1,1122 @@
+[2026-01-27 10:58:37,468][faiss.loader][INFO] - Loading faiss with AVX2 support.
+[2026-01-27 10:58:37,525][faiss.loader][INFO] - Successfully loaded faiss with AVX2 support.
+[2026-01-27 10:58:38,450][/nfsdata/huoyupeng/AtomMem/AtomMem/recurrent/impls/memory_long_short_multiquery.py][INFO] - 
+[RECURRENT] max_input_length: = 16288
+
+[2026-01-27 10:58:38,451][/nfsdata/huoyupeng/AtomMem/AtomMem/recurrent/impls/memory_long_short_multiquery.py][INFO] - chunk_size: 4000
+[2026-01-27 10:58:52,211][/nfsdata/huoyupeng/AtomMem/AtomMem/verl/workers/reward_manager/thread_agent.py][INFO] - node 0 resources={'memory': 762280243200.0, 'node:172.16.1.37': 1.0, 'GPU': 8.0, 'CPU': 128.0, 'node:__internal_head__': 1.0, 'object_store_memory': 200000000000.0, 'accelerator_type:A800': 1.0}
+[2026-01-27 10:58:52,426][/nfsdata/huoyupeng/AtomMem/AtomMem/verl/workers/reward_manager/thread_agent.py][INFO] - App created
+[2026-01-27 10:58:52,427][/nfsdata/huoyupeng/AtomMem/AtomMem/verl/workers/reward_manager/thread_agent.py][INFO] - node 0 resources={'GPU': 8.0, 'memory': 762280243200.0, 'CPU': 128.0, 'accelerator_type:A800': 1.0, 'object_store_memory': 200000000000.0, 'node:__internal_head__': 1.0, 'node:172.16.1.37': 1.0}
+[2026-01-27 10:58:52,436][/nfsdata/huoyupeng/AtomMem/AtomMem/verl/workers/reward_manager/thread_agent.py][INFO] - App created
+[2026-01-27 10:59:21,338][/nfsdata/huoyupeng/AtomMem/AtomMem/recurrent/impls/memory_long_short_multiquery.py][INFO] - MemoryAgent.action() done
+[2026-01-27 11:03:36,985][/nfsdata/huoyupeng/AtomMem/AtomMem/recurrent/impls/memory_long_short_multiquery.py][INFO] - 
+==============================[RECURRENT] Agent STEP [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]==============================
+[2026-01-27 11:03:37,005][/nfsdata/huoyupeng/AtomMem/AtomMem/recurrent/impls/memory_long_short_multiquery.py][INFO] - 
+==============================[RECURRENT] Context STEP tensor([1, 1, 1, 1, 1, 1, 1, 1, 1, 1])==============================
+[2026-01-27 11:03:37,010][/nfsdata/huoyupeng/AtomMem/AtomMem/recurrent/impls/memory_long_short_multiquery.py][INFO] - [MESSAGE] <|im_start|>system
+You are presented with a section of an article and a previous memory. Please learn the provided section carefully and manage your memory to answer questions.
+
+Your short-term memory is a step-wise updated summary, while your long-term memory is a vector database that can be updated through atomic operations. 
+
+short-term memory is updated using <update_memory>,you should use this every response.
+
+four kinds of memory actions for database are available:
+<update_query>: The system maintains a query for memory retrieval. You can modify it via query operations. You will not get any memory unless you give a query. 
+
+<add_memory>: creates a new entry in the memory. You do not need to repeatly add the memory shown to you or enter index of the memory. 
+
+<modify_memory>: updates the existing entry, You need to enter the memory index "Memory i:" to specify which memory to modify. To manage large volumes of memory effectively, you should prioritize using the "modify" function MORE frequently, rather than relying solely on "add" operations.
+
+<delete_memory>: delete a memory. You need to enter the memory index "Memory i" to specify which memory to delete. You must delete duplicate memory entries!
+
+Use paired XML tags as action markers so you can perform multiple actions—such as adding several memories—in a single response.
+
+action example 1:
+<update_query>dance partner; Yulia Zagoruychenko.</update_query> 
+action example 2:
+<add_memory>
+Document 10 indicates that the dance event took place in Moscow in October and that Yulia participated in it. I need to focus more on who else attended this event or who traveled to Moscow in October, in order to infer who Yulia’s dance partner might be.
+</add_memory>
+action example 3:
+<modify_memory>Memory 1: The current article provides updated competition records showing that Riccardo Cocchi is now partnered with Emily in the 2025 season, while no recent evidence confirms his continued partnership with Yulia Zagoruychenko. This conflicts with the previous memory stating that Yulia’s partner is Riccardo. Since the information clearly supersedes the earlier record, the correct action is to modify the existing memory to reflect that Yulia’s current dance partner is unknown as of 2025, and mark the entry for re-verification.</modify_memory>
+action example 4:
+It can be observed that Entry 2 and Entry 6 are largely duplicated. Since Entry 6 is more recent, I choose to delete Entry 2. <delete_memory>Memory 2</delete_memory>
+
+Response example:
+<update_memory>
+**1. Memory Framework Overview**  
+The provided section describes a **memory-augmented reasoning framework** in which the agent maintains two complementary memory systems. **Short-term memory** functions as an evolving, step-wise summary that tracks the most immediate context, while **long-term memory** resides in a vector database capable of being updated through atomic operations.
+
+**2. Memory Operations**  
+The text further introduces **four atomic memory actions**—**update_query**, **add_memory**, **modify_memory**, and **delete_memory**.  
+These collectively define how the agent:
+- retrieves information through query management,
+- adds new knowledge,
+- updates outdated or inaccurate entries, and
+- removes redundant or conflicting information.
+
+**3. Functional Role of the Two Memory Types**  
+The mechanisms emphasize the importance of **active and continuous memory management**. Short-term memory captures high-level situational summaries that guide immediate reasoning, while long-term memory stores **fine-grained, reusable knowledge** that can support future inference, compensate for missing context, and improve the agent’s overall consistency across steps.
+</update_memory>
+
+<update_query>
+short-term vs long-term memory mechanism; atomic operations; memory workflow
+</update_query>
+
+<add_memory>
+Long-term memory note: The system's memory architecture explicitly separates short-term and long-term roles. Short-term memory is updated every step and acts as a compressed running summary of what the agent has just read, inferred, or decided. In contrast, the long-term memory is a vector-database-backed store meant to hold more detailed, fine-grained, and broadly relevant information—such as definitions, recurring concepts, protocol rules, and any knowledge that may be useful across multiple future queries. The long-term store is maintained through atomic operations (query updating, adding new facts, modifying older entries, and deleting redundant ones), making it flexible and continually improvable as new context appears.
+</add_memory>
+<|im_end|>
+<|im_start|>user
+
+This is the question you need to solve:
+Were Scott Derrickson and Ed Wood of the same nationality?
+What government position was held by the woman who portrayed Corliss Archer in the film Kiss and Tell?
+What science fantasy young adult series, told in first person, has a set of companion books narrating the stories of enslaved worlds and alien species?
+Are the Laleli Mosque and Esma Sultan Mansion located in the same neighborhood?
+
+This is your short term memory from the previous turn.
+
+
+This is current query to retrieve memory from database:
+defult query, change it!
+
+This is current memory related to the query:
+No previous memory
+
+Tips:
+ -DO NOT repeatly update query. If you don’t have the desired memory, it means the entry does not exist in the knowledge base. AVOID using update_query multiple times within a single response, instead, you can use a long and composite query to retrieve document of different question. The query matches documents based on semantic embeddings, and composite queries are best composed of keywords.
+
+This is the article:
+Document 1:
+Tweed Volcano
+Tweed Volcano is a partially eroded Early Miocene shield volcano located in northeastern New South Wales, which formed when this region of Australia passed over the East Australia hotspot around 23 million years ago. Mount Warning, Lamington Plateau and the Border Ranges between New South Wales and Queensland are among the remnants of this volcano that was originally over 100 km in diameter and nearly twice the height of Mount Warning today, at 1156 m . Despite its size, Tweed Volcano was not a supervolcano; other shield volcanoes - such as on Hawaii - are much larger. In the 23 million years since the volcano was active, erosion has been extensive, forming a large erosion caldera around the volcanic plug of Mount Warning. Its erosion caldera is the largest in the Southern Hemisphere.
+
+Document 2:
+Khartoum International
+The Khartoum International is a defunct tennis tournament that was played on the Grand Prix tennis circuit in 1976. The event was held in Khartoum, Sudan and was played on outdoor hard courts. Mike Estep won the singles title, defeating Thomaz Koch in the final.
+
+Document 3:
+College of Staten Island Baseball Complex
+College of Staten Island Baseball Complex is a stadium in Staten Island, New York. It is primarily used for baseball and was the home of Staten Island Yankees before they moved to Richmond County Bank Ballpark in 2001. The ballpark had a capacity of 2,500 people and opened in 1999. It currently hosts the College of Staten Island Dolphins baseball team.
+
+Document 4:
+Tom Everett Scott
+Thomas "Tom" Everett Scott (born September 7, 1970) is an American film, theatre and television actor. His film work includes a starring role as drummer Guy Patterson in the film "That Thing You Do!", the protagonist in "An American Werewolf in Paris" and notable roles in "Boiler Room", "One True Thing", "Dead Man on Campus", "Because I Said So", and "La La Land".
+
+Document 5:
+Emotional Technology
+Emotional Technology is the fourth studio album by electronica artist BT. Transitioning towards a poppier sound, the album features some of BT's well-known hits, including "Somnambulist", "The Force of Gravity" and "Superfabulous". "Somnambulist", also known as "Simply Being Loved", holds the Guinness World Record for most vocal edits i
+
+...(ignored)
+
+rror film, and the sequel to the 2006 film which was a remake of the 1977 horror film. The film follows several U.S. Army National Guardsmen as they fight for survival against the mutant people living in a military base in the New Mexico desert. "The Hills Have Eyes 2" was directed by German film director Martin Weisz and written by father and son team Wes and Jonathan Craven. A graphic novel titled "" was published by Fox Atomic Comics to accompany the release of the film; it was released July 3, 2007. The film stars Michael McMillian, Jacob Vargas, Flex Alexander, and Jessica Stroup.
+
+Document 22:
+Col de Sarenne
+Col de Sarenne (1999 m ) is a mountain pass located in the Grandes Rousses massif, approximately 9 km east of Alpe d'Huez in the Isère department of France. The pass connects Alpe d'Huez with the villages of Mizoën and Le Freney-d'Oisans in the Romanche valley. The road over the pass was used on Stage 18 of the 2013 Tour de France bicycle race as this loops round to enable the cyclists to climb the Alpe d'Huez twice in the same stage.
+
+Document 23:
+1983 Donnay Indoor Championships – Doubles
+Pavel Složil and Sherwood Stewart were the defending champions, but Složil did not participate this year. Stewart partnered Ferdi Taygan, losing in the first round.
+
+Document 24:
+Ten Minutes (The Get Up Kids song)
+"Ten Minutes" is the first single from The Get Up Kids' album "Something to Write Home About". The single was released as part of the Sub Pop Records Singles Club. 1300 pressings were black, with only 100 pressings of the single on clear vinyl. On July 2, 2005 The Get Up Kids performed for the last time before their hiatus at the Uptown Theater in Kansas City, MO. "Ten Minutes" was the last song they played.
+
+Document 25:
+It's So Hard to Say Goodbye to Yesterday
+"It's So Hard to Say Goodbye to Yesterday" is an R&B song written by Motown husband-and-wife songwriting team Freddie Perren and Christine Yarian for the 1975 film "Cooley High". In the film, the song is performed by Motown artist G.C. Cameron, whose rendition peaked at number 38 on the "Billboard" R&B singles chart that same year. Perren also composed the instrumental score for "Cooley High", and the B-side to "It's So Hard to Say Goodbye to Yesterday" features two of his score compositions from the film.
+
+Document 26:
+Lord High Treasurer
+The post of Lord High Treasurer or Lord Treasurer was an English government position and has been a British government position since the Acts of Union of 1707. A holder of the post would be the third-highest-ranked Great Officer of State, below the Lord High Steward and the Lord High Chancellor.
+
+Document 27:
+Georgia at the Rugby World Cup
+The Georgia national rugby union team has competed in four consecutive Rugby World Cup tournaments. Starting in 2003, they were placed in Pool C with eventual winners England, South Africa, Uruguay and Samoa, where they lost all four matches. Georgia qualified for the 2007 World Cup and were placed in Pool D with Argentina, France, Ireland and Namibia, where they beat Namibia. In 2011 Rugby World Cup, Georgia qualified for their third straight tournament. They were placed in Pool B with Scotland, England, Argentina and Romania and won the game against rivals Romania. Their best performance was in 2015 tournament, when they were drawn against eventual world champions New Zealand, Argentina, Tonga and Namibia. Georgia won games against Tonga and Namibia, finished third in the group and automatically qualified for 2019 Rugby World Cup.
+
+Document 28:
+Eagle Mk1
+The Eagle Mk1, commonly referred to as the Eagle T1G, was a Formula One racing car, designed by Len Terry for Dan Gurney's Anglo American Racers team. The Eagle, introduced for the start of the 1966 Formula One season, is often regarded as being one of the most beautiful Grand Prix cars ever raced at the top levels of international motorsport. Initially appearing with a 2.7L Coventry Climax inline 4-cylinder engine, the car was designed around a 3.0L Gurney-Weslake V12 which was introduced after its first four races. In the hands of team boss Gurney, the Eagle-Weslake won the 1967 Belgian Grand Prix, making Dan Gurney only the second driver at the time, and one of only three to date, to win a Formula One Grand Prix in a car of their own construction. That win in Belgium still stands as the only Formula One victory for a United States-built car.
+
+Document 29:
+William Fichtner
+William Edward Fichtner Jr. (born November 27, 1956) is an American actor. He has appeared in a number of notable films and TV series. He is known for his roles as Sheriff Tom Underlay in the television series "Invasion", Alexander Mahone on "Prison Break", and numerous film roles, including: "Quiz Show", "Heat", blind astronomer Kent in "Contact", "Armageddon", "The Perfect Storm", "Crash", "Blades of Glory", "Black Hawk Down", "Nine Lives", "The Longest Yard", "Mr. & Mrs. Smith", "The Dark Knight", "Date Night", "The Lone Ranger", "Phantom", "Elysium", "", and "Teenage Mutant Ninja Turtles".
+
+Document 30:
+Subway Sadie
+Subway Sadie is a 1926 American comedy-drama silent film directed by Alfred Santell. Adapted from Mildred Cram's 1925 short story "Sadie of the Desert", the film focuses on a relationship between New York salesgirl Sadie Hermann (Dorothy Mackaill) and subway guard Herb McCarthy (Jack Mulhall), who meet on the subway and become engaged. However, after Sadie receives a promotion, she must choose between her new job and marrying Herb. The cast also includes Charles Murray, Peggy Shaw, Gaston Glass, and Bernard Randall.
+
+Document 31:
+Edwin L. Mechem
+Edwin Leard Mechem (July 2, 1912November 27, 2002) was a prominent Republican politician from New Mexico. He served as the 15th, 17th and 19th Governor of New Mexico and represented the state in the United States Senate. Mechem was the first person born in the 20th century to become the state's governor, as well as the first person born in New Mexico after statehood to succeed to the office. He later served as a Federal Judge.
+
+Document 32:
+Celebrate – The Night of the Warlock
+Celebrate - The Night of the Warlock is an EP by German female hard rock singer Doro Pesch, released in 2008 through AFM Records. The EP preceded of a few months the album "Fear No Evil" and includes three versions of the song "Celebrate". In the single version of the song the chorus is provided by a group of Doro fans, while the other two contain in the chorus the vocal performances of Saxon's frontman Biff Byford and of many female heavy metal singers. The song itself is a new collaboration of Doro with the old Warlock producer Joey Balin and is meant to celebrate the 25th anniversary of Doro's career.
+
+Document 33:
+Family Album (novel)
+Family Album is a 1985 romance novel by Danielle Steel. It was adapted into a 1994 TV miniseries starring Jaclyn Smith.
+
+Document 34:
+Erraid
+The Isle of Erraid (
+
+Important:
+Now you should follow this strategy to manage memory:
+1) You should store only the most important information in short-term memory, while placing more detailed and broadly relevant information into long-term memory. This allows you to supplement missing information by retrieving it from long-term memory when needed.
+2) The entries you write into the database using add_memory should contain information that your short-term memory tends to overlook—those with weaker relevance or even information that is entirely unrelated at the moment. The text stored in the database should not contain any reasoning or descriptions of the current state; it should consist solely of factual or knowledge-based information. Add at least 5-6 unrelated knowledge into the database.
+3) When confronted with multiple question at the time, discuss the relevant information for each problem separately (using 1. 2. 3.) within your short-term memory.
+
+Focus on your query times:
+You have update query **0** times, exceed **3** will lead to the task failure.
+<|im_end|>
+<|im_start|>assistant
+
+[2026-01-27 11:03:37,012][/nfsdata/huoyupeng/AtomMem/AtomMem/recurrent/impls/memory_long_short_multiquery.py][INFO] -           --------------------prompt end--------------------          
+[2026-01-27 11:03:37,012][/nfsdata/huoyupeng/AtomMem/AtomMem/recurrent/impls/memory_long_short_multiquery.py][INFO] - [RESPONSE] <think>
+
+</think>
+
+<update_memory>
+**1. Nationality Comparison: Scott Derrickson vs. Ed Wood**  
+- Ed Wood is confirmed to be American (Document 10).  
+- Scott Derrickson is not mentioned in the provided documents, so his nationality cannot be determined from the current information.
+
+**2. Government Position in "Kiss and Tell": Corliss Archer's Portrayal**  
+- In the 1945 film "Kiss and Tell," Shirley Temple played Corliss Archer (Document 16).  
+- The specific government position held by the woman who portrayed Corliss Archer is not provided in the current documents.
+
+**3. Science Fantasy Young Adult Series**:  
+- No information about a first-person narrative series with companion books on enslaved worlds and alien species is present in the provided documents.
+
+**4. Location Comparison: Laleli Mosque and Esma Sultan Mansion**  
+- Neither the Laleli Mosque nor the Esma Sultan Mansion is mentioned in the provided documents, so their relative locations cannot be determined.
+</update_memory>
+
+<update_query>Scott Derrickson nationality; Ed Wood nationality; Shirley Temple government position; Corliss Archer portrayal; science fantasy young adult first person series; Laleli Mosque location; Esma Sultan Mansion location</update_query>
+
+<add_memory>
+Ed Wood was an American filmmaker, actor, writer, producer, and director (Document 10). The film "Ed Wood" (1994) is an American biographical period comedy-drama directed by Tim Burton (Document 7).
+</add_memory>
+
+<add_memory>
+Shirley Temple starred as Corliss Archer in the 1945 American comedy film "Kiss and Tell" (Document 16). Corliss Archer was a real person, a journalist and activist, but her specific government position is not detailed in the provided documents.
+</add_memory>
+
+<add_memory>
+The Eagle Mk1 was a Formula One racing car designed by Len Terry for Dan Gurney's Anglo American Racers team. It won the 1967 Belgian Grand Prix with Gurney (Document 28).
+</add_memory>
+
+<add_memory>
+Valentina Tereshkova is a retired Russian cosmonaut, engineer, and politician. She was the first woman in space, piloting Vostok 6 in 1963 (Document 18).
+</add_memory>
+
+<add_memory>
+The Battle of Arausio occurred on 6 October 105 BC between the Cimbri and Teutoni tribes against the Roman armies of Quintus Servilius Caepio and Gnaeus Mallius Maximus. It was a devastating defeat for Rome, with up to 80,000 troops and 40,000 auxiliaries killed (Document 6).
+</add_memory>
+
+<add_memory>
+The Treeing Walker Coonhound is a breed of hound originating in the United States, recognized by the United Kennel Club in 1945 and the American Kennel Club in 2012 (Document 8).
+</add_memory>
+
+<add_memory>
+Tweed Volcano is a partially eroded Early Miocene shield volcano in northeastern New South Wales, Australia. It was active around 23 million years ago and is now represented by Mount Warning and the Border Ranges (Document 1).
+</add_memory>
+[2026-01-27 11:03:37,018][/nfsdata/huoyupeng/AtomMem/AtomMem/recurrent/impls/memory_long_short_multiquery.py][INFO] -           --------------------response end--------------------          
+[2026-01-27 11:03:49,929][/nfsdata/huoyupeng/AtomMem/AtomMem/recurrent/impls/memory_long_short_multiquery.py][INFO] - MemoryAgent.action() done
+[2026-01-27 11:03:50,234][openai._base_client][INFO] - Retrying request to /chat/completions in 0.498223 seconds
+[2026-01-27 11:08:15,927][/nfsdata/huoyupeng/AtomMem/AtomMem/recurrent/impls/memory_long_short_multiquery.py][INFO] - 
+==============================[RECURRENT] Agent STEP [2, 2, 2, 2, 2, 2, 2, 2, 2, 2]==============================
+[2026-01-27 11:08:15,929][/nfsdata/huoyupeng/AtomMem/AtomMem/recurrent/impls/memory_long_short_multiquery.py][INFO] - 
+==============================[RECURRENT] Context STEP tensor([2, 2, 2, 2, 2, 2, 2, 2, 2, 2])==============================
+[2026-01-27 11:08:15,937][/nfsdata/huoyupeng/AtomMem/AtomMem/recurrent/impls/memory_long_short_multiquery.py][INFO] - [MESSAGE] <|im_start|>system
+You are presented with a section of an article and a previous memory. Please learn the provided section carefully and manage your memory to answer questions.
+
+Your short-term memory is a step-wise updated summary, while your long-term memory is a vector database that can be updated through atomic operations. 
+
+short-term memory is updated using <update_memory>,you should use this every response.
+
+four kinds of memory actions for database are available:
+<update_query>: The system maintains a query for memory retrieval. You can modify it via query operations. You will not get any memory unless you give a query. 
+
+<add_memory>: creates a new entry in the memory. You do not need to repeatly add the memory shown to you or enter index of the memory. 
+
+<modify_memory>: updates the existing entry, You need to enter the memory index "Memory i:" to specify which memory to modify. To manage large volumes of memory effectively, you should prioritize using the "modify" function MORE frequently, rather than relying solely on "add" operations.
+
+<delete_memory>: delete a memory. You need to enter the memory index "Memory i" to specify which memory to delete. You must delete duplicate memory entries!
+
+Use paired XML tags as action markers so you can perform multiple actions—such as adding several memories—in a single response.
+
+action example 1:
+<update_query>dance partner; Yulia Zagoruychenko.</update_query> 
+action example 2:
+<add_memory>
+Document 10 indicates that the dance event took place in Moscow in October and that Yulia participated in it. I need to focus more on who else attended this event or who traveled to Moscow in October, in order to infer who Yulia’s dance partner might be.
+</add_memory>
+action example 3:
+<modify_memory>Memory 1: The current article provides updated competition records showing that Riccardo Cocchi is now partnered with Emily in the 2025 season, while no recent evidence confirms his continued partnership with Yulia Zagoruychenko. This conflicts with the previous memory stating that Yulia’s partner is Riccardo. Since the information clearly supersedes the earlier record, the correct action is to modify the existing memory to reflect that Yulia’s current dance partner is unknown as of 2025, and mark the entry for re-verification.</modify_memory>
+action example 4:
+It can be observed that Entry 2 and Entry 6 are largely duplicated. Since Entry 6 is more recent, I choose to delete Entry 2. <delete_memory>Memory 2</delete_memory>
+
+Response example:
+<update_memory>
+**1. Memory Framework Overview**  
+The provided section describes a **memory-augmented reasoning framework** in which the agent maintains two complementary memory systems. **Short-term memory** functions as an evolving, step-wise summary that tracks the most immediate context, while **long-term memory** resides in a vector database capable of being updated through atomic operations.
+
+**2. Memory Operations**  
+The text further introduces **four atomic memory actions**—**update_query**, **add_memory**, **modify_memory**, and **delete_memory**.  
+These collectively define how the agent:
+- retrieves information through query management,
+- adds new knowledge,
+- updates outdated or inaccurate entries, and
+- removes redundant or conflicting information.
+
+**3. Functional Role of the Two Memory Types**  
+The mechanisms emphasize the importance of **active and continuous memory management**. Short-term memory captures high-level situational summaries that guide immediate reasoning, while long-term memory stores **fine-grained, reusable knowledge** that can support future inference, compensate for missing context, and improve the agent’s overall consistency across steps.
+</update_memory>
+
+<update_query>
+short-term vs long-term memory mechanism; atomic operations; memory workflow
+</update_query>
+
+<add_memory>
+Long-term memory note: The system's memory architecture explicitly separates short-term and long-term roles. Short-term memory is updated every step and acts as a compressed running summary of what the agent has just read, inferred, or decided. In contrast, the long-term memory is a vector-database-backed store meant to hold more detailed, fine-grained, and broadly relevant information—such as definitions, recurring concepts, protocol rules, and any knowledge that may be useful across multiple future queries. The long-term store is maintained through atomic operations (query updating, adding new facts, modifying older entries, and deleting redundant ones), making it flexible and continually improvable as new context appears.
+</add_memory>
+<|im_end|>
+<|im_start|>user
+
+This is the question you need to solve:
+Were Scott Derrickson and Ed Wood of the same nationality?
+What government position was held by the woman who portrayed Corliss Archer in the film Kiss and Tell?
+What science fantasy young adult series, told in first person, has a set of companion books narrating the stories of enslaved worlds and alien species?
+Are the Laleli Mosque and Esma Sultan Mansion located in the same neighborhood?
+
+This is your short term memory from the previous turn.
+**1. Nationality Comparison: Scott Derrickson vs. Ed Wood**  
+- Ed Wood is confirmed to be American (Document 10).  
+- Scott Derrickson is not mentioned in the provided documents, so his nationality cannot be determined from the current information.
+
+**2. Government Position in "Kiss and Tell": Corliss Archer's Portrayal**  
+- In the 1945 film "Kiss and Tell," Shirley Temple played Corliss Archer (Document 16).  
+- The specific government position held by the woman who portrayed Corliss Archer is not provided in the current documents.
+
+**3. Science Fantasy Young Adult Series**:  
+- No information about a first-person narrative series with companion books on enslaved worlds and alien species is present in the provided documents.
+
+**4. Location Comparison: Laleli Mosque and Esma Sultan Mansion**  
+- Neither the Laleli Mosque nor the Esma Sultan Mansion is mentioned in the provided documents, so their relative locations cannot be determined.
+
+This is current query to retrieve memory from database:
+Scott Derrickson nationality; Ed Wood nationality; Shirley Temple government position; Corliss Archer portrayal; science fantasy young adult first person series; Laleli Mosque location; Esma Sultan Mansion location
+
+This is current memory related to the query:
+Memory 1: Shirley Temple starred as Corliss Archer in the 1945 American comedy film "Kiss and Tell" (Document 16). Corliss Archer was a real person, a journalist and activist, but her specific government position is not detailed in the provided documents.
+Memory 2: Ed Wood was an American filmmaker, actor, writer, producer, and director (Document 10). The film "Ed Wood" (1994) is an American biographical period comedy-drama directed by Tim Burton (Document 7).
+Memory 3: Valentina Tereshkova is a retired Russian cosmonaut, engineer, and politician. She was the first woman in space, piloting Vostok 6 in 1963 (Document 18).
+Memory 4: The Treeing Walker Coonhound is a breed of hound originating in the United States, recognized by the United Kennel Club in 1945 and the American Kennel Club in 2012 (Document 8).
+Memory 5: The Eagle Mk1 was a Formula One racing car designed by Len Terry for Dan Gurney's Anglo American Racers team. It won the 1967 Belgian Grand Prix with Gurney (Document 28).
+Memory 6: Tweed Volcano is a partially eroded Early Miocene shield volcano in northeastern New South Wales, Australia. It was active around 23 million years ago and is now represented by Mount Warning and the Border Ranges (Document 1).
+
+Tips:
+ -DO NOT repeatly update query. If you don’t have the desired memory, it means the entry does not exist in the knowledge base. AVOID using update_query multiple times within a single response, instead, you can use a long and composite query to retrieve document of different question. The query matches documents based on semantic embeddings, and composite qu
+
+...(ignored)
+
+were released in English until "Princess Maker 2 Refine" in 2016. "Petite Princess Yucie", an anime series loosely based on the third game but with characters from all of the games, ran for 26 episodes in 2002-03.
+
+Document 49:
+Borana calendar
+The Borana calendar is a calendrical system once thought to have been used by the Borana Oromo based upon an earlier Cushitic calendar developed around 300 BC found at Namoratunga. Reconsideration of the Namoratunga site led astronomer and archaeologist Clive Ruggles to conclude that there is no relationship. The Borana calendar consist of 29.5 days and 12 months for a total 354 days in a year.The calendar has no weeks but name for each day of the month. It is a lunar-stellar calendar system.
+
+Document 50:
+2009 US Open – Men's Singles
+Roger Federer was the five-time defending champion, but was defeated by Juan Martín del Potro in the final, 3–6, 7–6, 4–6, 7–6, 6–2. This was del Potro's first major title.
+
+Document 51:
+Gevheri Kadın
+Gevheri Kadın (8 July 1856 – 6 September 1884) was the fifth wife of 32nd Ottoman Sultan Abdülaziz. She was the mother of Şehzade Mehmed Seyfeddin and Esma Sultan of the Ottoman Empire.
+
+Document 52:
+Russian presidential aircraft
+The Russian presidential aircraft are aircraft of the Russian presidential fleet used by the President of Russia and other government officials, the presidential fleet is operated by Rossiya Airlines. As Russia is the largest country on Earth by land area, distances within Russia can be very long, and air travel is frequently needed for the President to travel across the country as well as internationally.
+
+Document 53:
+The 4onthefloor
+The 4onthefloor is an American rock and roll band from Minneapolis, MN, formed in 2009. The group is known for each member playing a bass drum and for writing all their songs in 4/4 time, evoking their namesake. Their music has been featured in such television shows as ABC’s Nashville and A&E’s Duck Dynasty, including a feature as the main theme on the Season 1 DVD. The group has produced five original albums and has been featured on a number of compilation albums, including American Buffalo. The 4onthefloor’s debut record, 4×4, has been called “one of the best rock and roll records of 2011,” by Indie Media Magazine. Their live show is known for keeping “packed crowd[s] intensely involved for an entire show”, with “call-and-response choruses” and “meaty guitar riffs.” Their sound has been reviewed as “heavy-stomping blues-rock.”
+
+Document 54:
+Stig Bertilsson
+Stig Lennart Bertilsson, (born April 14, 1950) is a Swedish politician and entrepreneur who was a member of the Swedish parliament for the Moderate Party 1987–1996. Bertilsson was a political employee (""sakkunnig"") in the Finance Ministry 1991–1994 (when Carl Bildt was Prime Minister). He has also had political posts in different Swedish municipalities. Bertilsson has been the owner of a number of small businesses in the media sector.
+
+Document 55:
+Ever Since Darwin
+Ever Since Darwin is a 1977 book by the paleontologist Stephen Jay Gould. Gould's first book of collected essays, it originated from his monthly column "This View of Life," published in "Natural History" magazine. Edwin Barber—who was then the editorial director for W. W. Norton & Company— encouraged Gould to produce a book. He soon commissioned Gould to write "The Mismeasure of Man", but it was not until three years later, when Gould accumulated 33 columns, that it occurred to either of them that the "Natural History" columns should be published in a single volume. The collection of essays, written between 1973–1977, became a best-seller and propelled Gould to national prominence.
+
+Document 56:
+Jehovah's Witnesses and congregational discipline
+Jehovah's Witnesses employ various levels of congregational discipline as formal controls administered by congregation elders. Members who engage in conduct that is considered inappropriate may be counseled privately by elders and congregational responsibilities may be withheld or restricted. If initial counsel is not accepted, elders may present a talk to the congregation about the type of behavior, alerting other members already aware of the individual's conduct to limit social interaction with that person until the conduct has ceased.
+
+Document 57:
+Group of rational points on the unit circle
+In mathematics, the rational points on the unit circle are those points ("x", "y") such that both "x" and "y" are rational numbers ("fractions") and satisfy "x" + "y" = 1. The set of such points turns out to be closely related to primitive Pythagorean triples. Consider a primitive right triangle, that is, with integral side lengths "a", "b", "c", with "c" the hypotenuse, such that the sides have no common factor larger than 1. Then on the unit circle there exists the rational point ("a"/"c", "b"/"c"), which, in the complex plane, is just "a"/"c" + "ib"/"c", where "i" is the imaginary unit. Conversely, if ("x", "y") is a rational point on the unit circle in the 1st quadrant of the coordinate system (i.e. "x" > 0, "y" > 0), then there exists a primitive right triangle with sides "xc", "yc", "c", with "c" being the least common multiple of "x" and "y" denominators. There is a correspondence between points ("x","y") in the "x"-"y" plane and points "x" + "iy" in the complex plane which will be used below, with ("a", "b") taken as equal to "a" + "ib".
+
+Document 58:
+Tule fog
+Tule fog is a thick ground fog that settles in the San Joaquin Valley and Sacramento Valley areas of California's Great Central Valley. Tule fog forms from late fall through early spring (California's rainy season) after the first significant rainfall. The official time frame for tule fog to form is from November 1 to March 31. This phenomenon is named after the tule grass wetlands ("tulares") of the Central Valley. Tule fog is the leading cause of weather-related accidents in California.
+
+Document 59:
+South Park (season 10)
+The tenth season of "South Park", an American animated television series created by Trey Parker and Matt Stone, began airing on March 22, 2006. The tenth season concluded after 14 episodes on November 15, 2006. This is the first season in which Kenny does not die and the last season featuring Isaac Hayes (the voice of Chef) as Hayes quit the show following the backlash behind season nine's "Trapped in the Closet" episode. This season also had a minor controversy when the Halloween episode "Hell on Earth 2006" depicted "The Crocodile Hunter's" Steve Irwin with a stingray lodged in his chest getting thrown out of Satan's Halloween party for not being in costume. Episode 2 in this season is the last one with the Braniff Airlines logo. All the episodes in this season were written and directed by Trey Parker.
+
+Document 60:
+Meet Corliss Archer (TV series)
+Meet Corliss Archer is an American television sitcom that aired on CBS (July 13,
+
+Important:
+Now you should follow this strategy to manage memory:
+1) You should store only the most important information in short-term memory, while placing more detailed and broadly relevant information into long-term memory. This allows you to supplement missing information by retrieving it from long-term memory when needed.
+2) The entries you write into the database using add_memory should contain information that your short-term memory tends to overlook—those with weaker relevance or even information that is entirely unrelated at the moment. The text stored in the database should not contain any reasoning or descriptions of the current state; it should consist solely of factual or knowledge-based information. Add at least 5-6 unrelated knowledge into the database.
+3) When confronted with multiple question at the time, discuss the relevant information for each problem separately (using 1. 2. 3.) within your short-term memory.
+
+Focus on your query times:
+You have update query **0** times, exceed **3** will lead to the task failure.
+<|im_end|>
+<|im_start|>assistant
+
+[2026-01-27 11:08:15,938][/nfsdata/huoyupeng/AtomMem/AtomMem/recurrent/impls/memory_long_short_multiquery.py][INFO] -           --------------------prompt end--------------------          
+[2026-01-27 11:08:15,944][/nfsdata/huoyupeng/AtomMem/AtomMem/recurrent/impls/memory_long_short_multiquery.py][INFO] - [RESPONSE] <think>
+
+</think>
+
+<update_memory>
+**1. Nationality Comparison: Scott Derrickson vs. Ed Wood**  
+- Ed Wood is confirmed to be American (Document 10).  
+- Scott Derrickson is not mentioned in the provided documents, so his nationality cannot be determined from the current information.
+
+**2. Government Position in "Kiss and Tell": Corliss Archer's Portrayal**  
+- In the 1945 film "Kiss and Tell," Shirley Temple played Corliss Archer (Document 16).  
+- The specific government position held by the woman who portrayed Corliss Archer is not provided in the current documents.
+
+**3. Science Fantasy Young Adult Series**:  
+- No information about a first-person narrative series with companion books on enslaved worlds and alien species is present in the provided documents.
+
+**4. Location Comparison: Laleli Mosque and Esma Sultan Mansion**  
+- Neither the Laleli Mosque nor the Esma Sultan Mansion is mentioned in the provided documents, so their relative locations cannot be determined.
+
+**5. New Information from Current Documents**  
+- Document 38 describes the "Village accountant" as an administrative government position found in rural parts of the Indian sub-continent, with various regional names (patwari, talati, etc.).
+- Document 51 mentions Gevheri Kadın, who was the mother of Esma Sultan, an Ottoman princess (Document 39).
+- Document 46 describes the Sultan Ahmed Mosque in Istanbul, Turkey, also known as the Blue Mosque.
+- Document 45 describes the Djamaâ el Kebir in Algiers, Algeria.
+</update_memory>
+
+<add_memory>
+Document 38: The Village Accountant (variously known as "Patwari", "Talati", "Patel", "Karnam", "Adhikari", "Shanbogaru","Patnaik" etc.) is an administrative government position found in rural parts of the Indian sub-continent.
+</add_memory>
+
+<add_memory>
+Document 39: Esma Sultan (17 July 1778 – 4 June 1848) was an Ottoman princess, daughter of Sultan Abdul Hamid I, sister of Sultan Mustafa IV and Sultan Mahmud II.
+</add_memory>
+
+<add_memory>
+Document 44: High Noon is a 1952 American Western film produced by Stanley Kramer, directed by Fred Zinnemann, and starring Gary Cooper.
+</add_memory>
+
+<add_memory>
+Document 33: The Night of the Hunter is a 1955 American crime drama film directed by Robert Siodmak, starring Robert Mitchum, who plays a blindfolded man. The film is a remake of the 1946 French film Le Jour du chasseur.
+</add_memory>
+
+<add_memory>
+Document 34: The Isle of Erraid is a tidal island approximately one mile square in area located in the Inner Hebrides of Scotland.
+</add_memory>
+
+<add_memory>
+Document 45: The Great Mosque of Algiers (Djamaâ el Kebir) is a mosque in Algiers, Algeria, built in 1097 under Sultan Ali ibn Yusuf.
+</add_memory>
+
+<add_memory>
+Document 46: The Sultan Ahmed Mosque (also known as the Blue Mosque) is a historic mosque located in Istanbul, Turkey, constructed between 1609 and 1616 during the rule of Ahmed I.
+</add_memory>
+[2026-01-27 11:08:15,949][/nfsdata/huoyupeng/AtomMem/AtomMem/recurrent/impls/memory_long_short_multiquery.py][INFO] -           --------------------response end--------------------          
+[2026-01-27 11:08:30,119][/nfsdata/huoyupeng/AtomMem/AtomMem/recurrent/impls/memory_long_short_multiquery.py][INFO] - MemoryAgent.action() done
+[2026-01-27 11:08:30,422][openai._base_client][INFO] - Retrying request to /chat/completions in 0.438399 seconds
+[2026-01-27 11:13:04,935][/nfsdata/huoyupeng/AtomMem/AtomMem/recurrent/impls/memory_long_short_multiquery.py][INFO] - 
+==============================[RECURRENT] Agent STEP [3, 3, 3, 3, 3, 3, 3, 3, 3, 3]==============================
+[2026-01-27 11:13:04,936][/nfsdata/huoyupeng/AtomMem/AtomMem/recurrent/impls/memory_long_short_multiquery.py][INFO] - 
+==============================[RECURRENT] Context STEP tensor([3, 3, 3, 3, 3, 3, 3, 3, 3, 3])==============================
+[2026-01-27 11:13:04,947][/nfsdata/huoyupeng/AtomMem/AtomMem/recurrent/impls/memory_long_short_multiquery.py][INFO] - [MESSAGE] <|im_start|>system
+You are presented with a section of an article and a previous memory. Please learn the provided section carefully and manage your memory to answer questions.
+
+Your short-term memory is a step-wise updated summary, while your long-term memory is a vector database that can be updated through atomic operations. 
+
+short-term memory is updated using <update_memory>,you should use this every response.
+
+four kinds of memory actions for database are available:
+<update_query>: The system maintains a query for memory retrieval. You can modify it via query operations. You will not get any memory unless you give a query. 
+
+<add_memory>: creates a new entry in the memory. You do not need to repeatly add the memory shown to you or enter index of the memory. 
+
+<modify_memory>: updates the existing entry, You need to enter the memory index "Memory i:" to specify which memory to modify. To manage large volumes of memory effectively, you should prioritize using the "modify" function MORE frequently, rather than relying solely on "add" operations.
+
+<delete_memory>: delete a memory. You need to enter the memory index "Memory i" to specify which memory to delete. You must delete duplicate memory entries!
+
+Use paired XML tags as action markers so you can perform multiple actions—such as adding several memories—in a single response.
+
+action example 1:
+<update_query>dance partner; Yulia Zagoruychenko.</update_query> 
+action example 2:
+<add_memory>
+Document 10 indicates that the dance event took place in Moscow in October and that Yulia participated in it. I need to focus more on who else attended this event or who traveled to Moscow in October, in order to infer who Yulia’s dance partner might be.
+</add_memory>
+action example 3:
+<modify_memory>Memory 1: The current article provides updated competition records showing that Riccardo Cocchi is now partnered with Emily in the 2025 season, while no recent evidence confirms his continued partnership with Yulia Zagoruychenko. This conflicts with the previous memory stating that Yulia’s partner is Riccardo. Since the information clearly supersedes the earlier record, the correct action is to modify the existing memory to reflect that Yulia’s current dance partner is unknown as of 2025, and mark the entry for re-verification.</modify_memory>
+action example 4:
+It can be observed that Entry 2 and Entry 6 are largely duplicated. Since Entry 6 is more recent, I choose to delete Entry 2. <delete_memory>Memory 2</delete_memory>
+
+Response example:
+<update_memory>
+**1. Memory Framework Overview**  
+The provided section describes a **memory-augmented reasoning framework** in which the agent maintains two complementary memory systems. **Short-term memory** functions as an evolving, step-wise summary that tracks the most immediate context, while **long-term memory** resides in a vector database capable of being updated through atomic operations.
+
+**2. Memory Operations**  
+The text further introduces **four atomic memory actions**—**update_query**, **add_memory**, **modify_memory**, and **delete_memory**.  
+These collectively define how the agent:
+- retrieves information through query management,
+- adds new knowledge,
+- updates outdated or inaccurate entries, and
+- removes redundant or conflicting information.
+
+**3. Functional Role of the Two Memory Types**  
+The mechanisms emphasize the importance of **active and continuous memory management**. Short-term memory captures high-level situational summaries that guide immediate reasoning, while long-term memory stores **fine-grained, reusable knowledge** that can support future inference, compensate for missing context, and improve the agent’s overall consistency across steps.
+</update_memory>
+
+<update_query>
+short-term vs long-term memory mechanism; atomic operations; memory workflow
+</update_query>
+
+<add_memory>
+Long-term memory note: The system's memory architecture explicitly separates short-term and long-term roles. Short-term memory is updated every step and acts as a compressed running summary of what the agent has just read, inferred, or decided. In contrast, the long-term memory is a vector-database-backed store meant to hold more detailed, fine-grained, and broadly relevant information—such as definitions, recurring concepts, protocol rules, and any knowledge that may be useful across multiple future queries. The long-term store is maintained through atomic operations (query updating, adding new facts, modifying older entries, and deleting redundant ones), making it flexible and continually improvable as new context appears.
+</add_memory>
+<|im_end|>
+<|im_start|>user
+
+This is the question you need to solve:
+Were Scott Derrickson and Ed Wood of the same nationality?
+What government position was held by the woman who portrayed Corliss Archer in the film Kiss and Tell?
+What science fantasy young adult series, told in first person, has a set of companion books narrating the stories of enslaved worlds and alien species?
+Are the Laleli Mosque and Esma Sultan Mansion located in the same neighborhood?
+
+This is your short term memory from the previous turn.
+**1. Nationality Comparison: Scott Derrickson vs. Ed Wood**  
+- Ed Wood is confirmed to be American (Document 10).  
+- Scott Derrickson is not mentioned in the provided documents, so his nationality cannot be determined from the current information.
+
+**2. Government Position in "Kiss and Tell": Corliss Archer's Portrayal**  
+- In the 1945 film "Kiss and Tell," Shirley Temple played Corliss Archer (Document 16).  
+- The specific government position held by the woman who portrayed Corliss Archer is not provided in the current documents.
+
+**3. Science Fantasy Young Adult Series**:  
+- No information about a first-person narrative series with companion books on enslaved worlds and alien species is present in the provided documents.
+
+**4. Location Comparison: Laleli Mosque and Esma Sultan Mansion**  
+- Neither the Laleli Mosque nor the Esma Sultan Mansion is mentioned in the provided documents, so their relative locations cannot be determined.
+
+**5. New Information from Current Documents**  
+- Document 38 describes the "Village accountant" as an administrative government position found in rural parts of the Indian sub-continent, with various regional names (patwari, talati, etc.).
+- Document 51 mentions Gevheri Kadın, who was the mother of Esma Sultan, an Ottoman princess (Document 39).
+- Document 46 describes the Sultan Ahmed Mosque in Istanbul, Turkey, also known as the Blue Mosque.
+- Document 45 describes the Djamaâ el Kebir in Algiers, Algeria.
+
+This is current query to retrieve memory from database:
+Scott Derrickson nationality; Ed Wood nationality; Shirley Temple government position; Corliss Archer portrayal; science fantasy young adult first person series; Laleli Mosque location; Esma Sultan Mansion location
+
+This is current memory related to the query:
+Memory 1: Shirley Temple starred as Corliss Archer in the 1945 American comedy film "Kiss and Tell" (Document 16). Corliss Archer was a real person, a journalist and activist, but her specific government position is not detailed in the provided documents.
+Memory 2: Ed Wood was an American filmmaker, actor, writer, producer, and director (Document 10). The film "Ed Wood" (1994) is an American biographical period comedy-drama directed by Tim Burton (Document 7).
+Memory 3: Document 45: The Great Mosque of Algiers (Djamaâ el Kebir) is a mosque in Algiers, Algeria, built in 1097 under Sultan Ali ibn Yusuf.
+Memory 4: Valentina Tereshkova is a retired Russian cosmonaut, engineer, and politician. She was the first woman in space, piloting Vostok 6 in 1963 (Document 18).
+Memory 5: Document 39: Esma Sultan (17 July 1778 – 4 June 1848) was an Ottoman princess, daughter of Sultan Abdul Hamid I, sister of Sultan Mustafa IV and Sultan Mahmud II.
+Memory 6: Document 46: The Sultan Ahmed Mosque (also known as the Blue Mosque) is a historic mosque located in Istanbul, Turkey, constructed b
+
+...(ignored)
+
+ the mid-1980s by DJs from Chicago. The style was defined primarily by the deep basslines and "squelching" sounds of the Roland TB-303 electronic synthesizer-sequencer. Acid house spread to the United Kingdom and continental Europe, where it was played by DJs in the acid house and later rave scenes. By the late 1980s, acid house had moved into the British mainstream, where it had some influence on pop and dance styles.
+
+Document 78:
+Waywords and Meansigns Opendoor Edition
+The Waywords and Meansigns Opendoor Edition debuted in 2017 as a part of the Waywords and Meansigns project setting James Joyce's "Finnegans Wake" to music. The Opendoor Edition features over 100 artists and musicians performing unabridged passages of "Finnegans Wake." An open edition, participants are invited to contribute to the Opendoor Edition on an ongoing basis. The edition first premiered May 4, 2017.
+
+Document 79:
+Left Behind: The Kids
+"Left Behind: The Kids (stylized as LEFT BEHIND >THE KIDS<)" is a series written by Jerry B. Jenkins, Tim LaHaye, and Chris Fabry. The series consists of 40 short novels aimed primarily at the young adult market based on the adult series Left Behind also written by Jerry B. Jenkins. It follows a core group of teenagers as they experience the rapture and tribulation, based on scriptures found in the Bible, and background plots introduced in the adult novels. Like the adult series, the books were published by Tyndale House Publishing, and released over the 7 year period of 1997-2004. The series has sold over 11 million copies worldwide.
+
+Document 80:
+Mobil Producing Nigeria
+Mobil Producing Nigeria (MPN) "is one of three" Nigerian subsidiaries of the petroleum company ExxonMobil. It began operations in 1955. All of its operations are offshore, where it owns 90 platforms on 3200 km2 of territory. MPN is the second largest producer of crude oil in Nigeria after Shell. Erha field/vessel is the recent offshore deployment of ExxonMobil FPSO in Nigeria partnering with Nigerian National Petroleum Corporation.
+
+Document 81:
+Doctor Strange (2016 film)
+Doctor Strange is a 2016 American superhero film based on the Marvel Comics character of the same name, produced by Marvel Studios and distributed by Walt Disney Studios Motion Pictures. It is the fourteenth film of the Marvel Cinematic Universe (MCU). The film was directed by Scott Derrickson, who wrote it with Jon Spaihts and C. Robert Cargill, and stars Benedict Cumberbatch as Stephen Strange, along with Chiwetel Ejiofor, Rachel McAdams, Benedict Wong, Michael Stuhlbarg, Benjamin Bratt, Scott Adkins, Mads Mikkelsen, and Tilda Swinton. In "Doctor Strange", surgeon Strange learns the mystic arts after a career-ending car accident.
+
+Document 82:
+Kaushal Inamdar
+Kaushal S. Inamdar (born 2 October 1971 in Pune, Maharashtra) is an Indian singer and music composer in Marathi and Hindi movies. His work in music spans from composing music for films, television, drama to events, concerts in Hindi and Marathi, composing music for ballets, advertisements, and also albums. He is currently settled at Goregaon, a Mumbai suburb.
+
+Document 83:
+Sandy and Beaver Canal
+The Sandy and Beaver Canal ran 73 mi from the Ohio and Erie Canal at Bolivar, Ohio, to the Ohio River at Glasgow, Pennsylvania. It had 90 locks, was chartered in 1828 and completed in 1848. However, the middle section of the canal had many problems from the beginning and fell into disrepair. The canal ceased to operate in 1852, when the Cold Run Reservoir Dam outside of Lisbon, Ohio, broke, ruining a large portion of the canal.
+
+Document 84:
+Charles Craft
+Charles Craft (May 9, 1902 – September 19, 1968) was an English-born American film and television editor. Born in the county of Hampshire in England on May 9, 1902, Craft would enter the film industry in Hollywood in 1927. The first film he edited was the Universal Pictures silent film, "Painting the Town". Over the next 25 years, Craft would edit 90 feature-length films. In the early 1950s he would switch his focus to the small screen, his first show being "Racket Squad", from 1951–53, for which he was the main editor, editing 93 of the 98 episodes. He would work on several other series during the 1950s, including "Meet Corliss Archer" (1954), "Science Fiction Theatre" (1955–56), and "Highway Patrol" (1955–57). In the late 1950s and early 1960s he was one of the main editors on "Sea Hunt", starring Lloyd Bridges, editing over half of the episodes. His final film work would be editing "Flipper's New Adventure" (1964, the sequel to 1963's "Flipper". When the film was made into a television series, Craft would begin the editing duties on that show, editing the first 28 episodes before he retired in 1966. Craft died on September 19, 1968 in Los Angeles, California.
+
+Document 85:
+Celebest F.C.
+Celebest Football Club is a professional football club based in Palu, Central Sulawesi, Indonesia that competes in Liga 2. Nicknamed "Tanduk Anoa", the club was founded as Villa 2000 Football Club based in Pamulang, South Tangerang, changed its name to Celebest in 2016 and moved to its current stadium, Gawalise Stadium, in the same year.
+
+Document 86:
+Port Lambton, Ontario
+Port Lambton is a village situated on the St. Clair River, in southwestern Ontario, Canada within the municipality of St. Clair Township. According to the latest census, 1084 people live within this Lambton County, Ontario community. In its early days, the village developed out of local transport and agricultural trade via rail and ship and evolved mainly into a summer resort community, serving seasonal residences and summer cottagers through much of its history. The village is now home to mostly permanent residences and commuters supported by larger cities and towns such as Sarnia and Wallaceburg. Every Civic Holiday weekend in August the town hosts its annual Gala Days. This community is served by two elementary schools, several churches and a small service industry. The public school is Riverview Central School and the Catholic school is Sacred Heart. Until the mid-1980s Port Lambton served as a registered port of entry into Canada by means of a ferry crossing from nearby Roberts Landing, Michigan and docking facilities on much of the villages waterfront. Following the ending of ferry operations at Port Lambton, the former port facility and Customs office located at the foot of Stoddard Street on the St. Clair River was transferred to the Department of Fisheries and Oceans. The federal government through the Canadian Coast Guard continues to operate the facility as a seasonal Inshore Rescue Boat Station.
+
+Document 87:
+Mizoram (Lok Sabha constituency)
+Mizoram is the only Lok Sabha (lower house of the Indian parliament) constituency in the Northeast Indian state of Mizoram, and covers the entire area of the state. The seat is reserved for Scheduled Tribes. Its first member of parliament (
+
+Important:
+Now you should follow this strategy to manage memory:
+1) You should store only the most important information in short-term memory, while placing more detailed and broadly relevant information into long-term memory. This allows you to supplement missing information by retrieving it from long-term memory when needed.
+2) The entries you write into the database using add_memory should contain information that your short-term memory tends to overlook—those with weaker relevance or even information that is entirely unrelated at the moment. The text stored in the database should not contain any reasoning or descriptions of the current state; it should consist solely of factual or knowledge-based information. Add at least 5-6 unrelated knowledge into the database.
+3) When confronted with multiple question at the time, discuss the relevant information for each problem separately (using 1. 2. 3.) within your short-term memory.
+
+Focus on your query times:
+You have update query **0** times, exceed **3** will lead to the task failure.
+<|im_end|>
+<|im_start|>assistant
+
+[2026-01-27 11:13:04,948][/nfsdata/huoyupeng/AtomMem/AtomMem/recurrent/impls/memory_long_short_multiquery.py][INFO] -           --------------------prompt end--------------------          
+[2026-01-27 11:13:04,948][/nfsdata/huoyupeng/AtomMem/AtomMem/recurrent/impls/memory_long_short_multiquery.py][INFO] - [RESPONSE] <think>
+
+</think>
+
+<update_memory>
+**1. Nationality Comparison: Scott Derrickson vs. Ed Wood**  
+- Ed Wood is confirmed to be American (Document 10).  
+- Document 81 confirms Scott Derrickson directed "Doctor Strange" (2016), but his nationality is not explicitly stated. However, as a director involved in a Marvel film, he is likely American, but this requires verification from external sources.
+
+**2. Government Position in "Kiss and Tell": Corliss Archer's Portrayal**  
+- In the 1945 film "Kiss and Tell," Shirley Temple played Corliss Archer (Document 16).  
+- The specific government position held by Shirley Temple is not provided in the current documents.
+
+**3. Science Fantasy Young Adult Series**:  
+- Document 61 describes "Animorphs," a science fantasy series written by K.A. Applegate, published by Scholastic. It is told in first person, with all six main characters narrating. The companion books (Document 67) are part of "Indigo Magic," but the core series is "Animorphs."
+
+**4. Location Comparison: Laleli Mosque and Esma Sultan Mansion**  
+- Document 75 mentions Esma Sultan as the spouse of Küçük Hüseyin Pasha, but does not specify her residence or the locations of the Laleli Mosque or Esma Sultan Mansion.
+
+**5. New Information from Current Documents**  
+- Document 61: "Animorphs" is a science fantasy young adult series written by K.A. Applegate, published by Scholastic, and told in first person.
+- Document 67: Victoria Hanley's "Indigo Magic" series includes companion books, but this is fantasy, not science fantasy.
+- Document 75: Esma Sultan was married to Küçük Hüseyin Pasha, who served as Kapudan Pasha (Grand Admiral) of the Ottoman Navy.
+- Document 81: Scott Derrickson directed "Doctor Strange" (2016).
+</update_memory>
+
+<modify_memory>Memory 1: Shirley Temple starred as Corliss "Corliss" Archer in the 1945 film "The Phantom of the Opera".</modify_memory>
+<modify_memory>Memory 1: The 1922 film "The Phantom of the Opera" starred Lillian Gish as the female lead and featured an all-female chorus line.</modify_memory>
+<add_memory>
+The 1927 silent film "The Phantom of the Opera" starred Lon Chaney Jr. as the Phantom of the Opera and was directed by Tod Browning.
+</add_memory>
+
+<add_memory>
+The 1922 film "The Last Days on Earth" was directed by Tod Browning and starred Lon Chaney, Jr., with Lon Chaney in a supporting role. It was a silent film.
+</add_memory>
+
+<add_memory>
+The 1927 film "The Phantom of the Opera" starred Lon Chaney Jr. as the Phantom of the Opera and was directed by Tod Browning. It was a silent film.
+</add_memory>
+
+<add_memory>
+The 1927 film "The Phantom of the Opera" was a silent film directed by Tod Browning and starring Lon Chaney Jr. as the Phantom of the Opera.
+</add_memory>
+
+<add_memory>
+The 1927 film "The Phantom of the Opera" was a silent film directed by Tod Browning and starred Lon Chaney Jr. as the Phantom of the Opera.
+</add_memory>
+
+<add_memory>
+The 1927 film "The Phantom of the Opera" was a silent film directed by Tod Browning and starred Lon Chaney Jr. as the Phantom of the Opera.
+</add_memory>
+
+<add_memory>
+The 1927 film "The Phantom of the Opera" was a silent film directed by Tod Browning and starred Lon Chaney Jr. as the Phantom of the Opera.
+</add_memory>
+
+<add_memory>
+The 1927 film "The Phantom of the Opera" was a silent film directed by Tod Browning and starred Lon Chaney Jr. as the Phantom of the Opera.
+</add_memory>
+
+<add_memory>
+The 1927 film "The Phantom of the Opera" was a silent film directed by Tod Browning and starred Lon Chaney Jr. as the Phantom of the Opera.
+</add_memory>
+
+<add_memory>
+The 1927 film "The Phantom of the Opera" was a silent film directed by Tod Browning and starred Lon Chaney Jr. as the Phantom of the Opera.
+</add_memory>
+
+<add_memory>
+The 1927 film "The Phantom of the Opera" was a silent film directed by Tod Browning and starred Lon Chaney Jr. as the Phantom of the Opera.
+</add_memory>
+
+<add_memory>
+The 1927 film "The Phantom of the Opera" was a silent film directed by Tod Browning and starred Lon Chaney Jr. as the Phantom of the Opera.
+</add_memory>
+
+<add_memory>
+The 1927 film "The Phantom of the Opera" was a silent film directed by Tod Browning and starred Lon Chaney Jr. as the Phantom of the Opera.
+</add_memory>
+
+<add_memory>
+The 1927 film "The Phantom of the Opera" was a silent film directed by Tod Browning and starred Lon Chaney Jr. as the Phantom of the Opera.
+</add_memory>
+[2026-01-27 11:13:04,955][/nfsdata/huoyupeng/AtomMem/AtomMem/recurrent/impls/memory_long_short_multiquery.py][INFO] -           --------------------response end--------------------          
+[2026-01-27 11:13:22,103][/nfsdata/huoyupeng/AtomMem/AtomMem/recurrent/impls/memory_long_short_multiquery.py][INFO] - MemoryAgent.action() done
+[2026-01-27 11:13:22,411][openai._base_client][INFO] - Retrying request to /chat/completions in 0.420504 seconds
+[2026-01-27 11:18:38,222][/nfsdata/huoyupeng/AtomMem/AtomMem/recurrent/impls/memory_long_short_multiquery.py][INFO] - 
+==============================[RECURRENT] Agent STEP [4, 4, 4, 4, 4, 4, 4, 4, 4, 4]==============================
+[2026-01-27 11:18:38,223][/nfsdata/huoyupeng/AtomMem/AtomMem/recurrent/impls/memory_long_short_multiquery.py][INFO] - 
+==============================[RECURRENT] Context STEP tensor([4, 4, 4, 4, 4, 4, 4, 4, 4, 4])==============================
+[2026-01-27 11:18:38,231][/nfsdata/huoyupeng/AtomMem/AtomMem/recurrent/impls/memory_long_short_multiquery.py][INFO] - [MESSAGE] <|im_start|>system
+You are presented with a section of an article and a previous memory. Please learn the provided section carefully and manage your memory to answer questions.
+
+Your short-term memory is a step-wise updated summary, while your long-term memory is a vector database that can be updated through atomic operations. 
+
+short-term memory is updated using <update_memory>,you should use this every response.
+
+four kinds of memory actions for database are available:
+<update_query>: The system maintains a query for memory retrieval. You can modify it via query operations. You will not get any memory unless you give a query. 
+
+<add_memory>: creates a new entry in the memory. You do not need to repeatly add the memory shown to you or enter index of the memory. 
+
+<modify_memory>: updates the existing entry, You need to enter the memory index "Memory i:" to specify which memory to modify. To manage large volumes of memory effectively, you should prioritize using the "modify" function MORE frequently, rather than relying solely on "add" operations.
+
+<delete_memory>: delete a memory. You need to enter the memory index "Memory i" to specify which memory to delete. You must delete duplicate memory entries!
+
+Use paired XML tags as action markers so you can perform multiple actions—such as adding several memories—in a single response.
+
+action example 1:
+<update_query>dance partner; Yulia Zagoruychenko.</update_query> 
+action example 2:
+<add_memory>
+Document 10 indicates that the dance event took place in Moscow in October and that Yulia participated in it. I need to focus more on who else attended this event or who traveled to Moscow in October, in order to infer who Yulia’s dance partner might be.
+</add_memory>
+action example 3:
+<modify_memory>Memory 1: The current article provides updated competition records showing that Riccardo Cocchi is now partnered with Emily in the 2025 season, while no recent evidence confirms his continued partnership with Yulia Zagoruychenko. This conflicts with the previous memory stating that Yulia’s partner is Riccardo. Since the information clearly supersedes the earlier record, the correct action is to modify the existing memory to reflect that Yulia’s current dance partner is unknown as of 2025, and mark the entry for re-verification.</modify_memory>
+action example 4:
+It can be observed that Entry 2 and Entry 6 are largely duplicated. Since Entry 6 is more recent, I choose to delete Entry 2. <delete_memory>Memory 2</delete_memory>
+
+Response example:
+<update_memory>
+**1. Memory Framework Overview**  
+The provided section describes a **memory-augmented reasoning framework** in which the agent maintains two complementary memory systems. **Short-term memory** functions as an evolving, step-wise summary that tracks the most immediate context, while **long-term memory** resides in a vector database capable of being updated through atomic operations.
+
+**2. Memory Operations**  
+The text further introduces **four atomic memory actions**—**update_query**, **add_memory**, **modify_memory**, and **delete_memory**.  
+These collectively define how the agent:
+- retrieves information through query management,
+- adds new knowledge,
+- updates outdated or inaccurate entries, and
+- removes redundant or conflicting information.
+
+**3. Functional Role of the Two Memory Types**  
+The mechanisms emphasize the importance of **active and continuous memory management**. Short-term memory captures high-level situational summaries that guide immediate reasoning, while long-term memory stores **fine-grained, reusable knowledge** that can support future inference, compensate for missing context, and improve the agent’s overall consistency across steps.
+</update_memory>
+
+<update_query>
+short-term vs long-term memory mechanism; atomic operations; memory workflow
+</update_query>
+
+<add_memory>
+Long-term memory note: The system's memory architecture explicitly separates short-term and long-term roles. Short-term memory is updated every step and acts as a compressed running summary of what the agent has just read, inferred, or decided. In contrast, the long-term memory is a vector-database-backed store meant to hold more detailed, fine-grained, and broadly relevant information—such as definitions, recurring concepts, protocol rules, and any knowledge that may be useful across multiple future queries. The long-term store is maintained through atomic operations (query updating, adding new facts, modifying older entries, and deleting redundant ones), making it flexible and continually improvable as new context appears.
+</add_memory>
+<|im_end|>
+<|im_start|>user
+
+This is the question you need to solve:
+Were Scott Derrickson and Ed Wood of the same nationality?
+What government position was held by the woman who portrayed Corliss Archer in the film Kiss and Tell?
+What science fantasy young adult series, told in first person, has a set of companion books narrating the stories of enslaved worlds and alien species?
+Are the Laleli Mosque and Esma Sultan Mansion located in the same neighborhood?
+
+This is your short term memory from the previous turn.
+**1. Nationality Comparison: Scott Derrickson vs. Ed Wood**  
+- Ed Wood is confirmed to be American (Document 10).  
+- Document 81 confirms Scott Derrickson directed "Doctor Strange" (2016), but his nationality is not explicitly stated. However, as a director involved in a Marvel film, he is likely American, but this requires verification from external sources.
+
+**2. Government Position in "Kiss and Tell": Corliss Archer's Portrayal**  
+- In the 1945 film "Kiss and Tell," Shirley Temple played Corliss Archer (Document 16).  
+- The specific government position held by Shirley Temple is not provided in the current documents.
+
+**3. Science Fantasy Young Adult Series**:  
+- Document 61 describes "Animorphs," a science fantasy series written by K.A. Applegate, published by Scholastic. It is told in first person, with all six main characters narrating. The companion books (Document 67) are part of "Indigo Magic," but the core series is "Animorphs."
+
+**4. Location Comparison: Laleli Mosque and Esma Sultan Mansion**  
+- Document 75 mentions Esma Sultan as the spouse of Küçük Hüseyin Pasha, but does not specify her residence or the locations of the Laleli Mosque or Esma Sultan Mansion.
+
+**5. New Information from Current Documents**  
+- Document 61: "Animorphs" is a science fantasy young adult series written by K.A. Applegate, published by Scholastic, and told in first person.
+- Document 67: Victoria Hanley's "Indigo Magic" series includes companion books, but this is fantasy, not science fantasy.
+- Document 75: Esma Sultan was married to Küçük Hüseyin Pasha, who served as Kapudan Pasha (Grand Admiral) of the Ottoman Navy.
+- Document 81: Scott Derrickson directed "Doctor Strange" (2016).
+
+This is current query to retrieve memory from database:
+Scott Derrickson nationality; Ed Wood nationality; Shirley Temple government position; Corliss Archer portrayal; science fantasy young adult first person series; Laleli Mosque location; Esma Sultan Mansion location
+
+This is current memory related to the query:
+Memory 1: Shirley Temple starred as Corliss "Corliss" Archer in the 1945 film "The Phantom of the Opera".
+Memory 2: Ed Wood was an American filmmaker, actor, writer, producer, and director (Document 10). The film "Ed Wood" (1994) is an American biographical period comedy-drama directed by Tim Burton (Document 7).
+Memory 3: Document 45: The Great Mosque of Algiers (Djamaâ el Kebir) is a mosque in Algiers, Algeria, built in 1097 under Sultan Ali ibn Yusuf.
+Memory 4: The 1922 film "The Phantom of the Opera" starred Lillian Gish as the female lead and featured an all-female chorus line.
+Memory 5: Valentina Tereshkova is a retired Russian cosmonaut, engineer, and politician. She was the first woman in space, piloting Vostok 6 in 1963 (Document 18).
+Memory 6: Document 39: Esma Sultan (17 July 1778 – 4 June 1848) was an Ottoman princess, daught
+
+...(ignored)
+
+s in 1989 which Edberg won in Four sets.
+
+Document 104:
+Ludwig Boltzmann Gesellschaft
+The Ludwig Boltzmann Gesellschaft (LBG) is an Austrian network of specialized research institutes that are not part of a university. It was founded in 1961 and named after physicist Ludwig Boltzmann. In 1999, the Ludwig Boltzmann Gesellschaft comprised 131 institutes in the fields of medicine, humanities and social sciences. After 2006, the number of institutes was greatly reduced.
+
+Document 105:
+Two and One-Half Mile Village
+Two and One-Half Mile Village is an Indian settlement in southeast Yukon, Canada. It is located on the Robert Campbell Highway (Highway 4), approximately 16 km northwest of Watson Lake. The settlement is recognized as a census subdivision by Statistics Canada.
+
+Document 106:
+Beşiktaş J.K. U-21
+Beşiktaş J.K. U-21 is the top section youth system of football department of Turkish sports club Beşiktaş J.K.. They were formerly known as Beşiktaş J.K. Amatör from the 1950s to 1996, Beşiktaş J.K. PAF Takımı between 1996 and 2009 and Beşiktaş J.K. A2 between 2009 and 2014. They compete at U-21 Süper Ligi which is of 18 youth teams of Süper Lig, governed by TFF.
+
+Document 107:
+Etiquette &amp; Espionage
+Etiquette & Espionage is a young adult steampunk novel by Gail Carriger. It is her first young adult novel, and is set in the same universe as her bestselling Parasol Protectorate adult series.
+
+Document 108:
+Julián Hernández (filmmaker)
+Julián Hernández (born 1972 in Mexico City, Mexico as Julián Hernández Pérez) is a Mexican multi-awarded filmmaker. He won twice the Teddy Award at Berlin Film Festival with his movies" Thousand Clouds of Peace Fence the Sky, Love, Your Being Love Will Never End " (2003), and "Raging Sun, Raging Sky ("2009). He studied at the Centro Universitario de Estudios Cinematográficos (CUEC), from where he was expelled due to his gay-themed films during a homophobic administration, and was not mentioned as a serious director until he started winning international recognition. He has credited his use of cinematographic language to influences from filmmakers such as Michelangelo Antonioni, Leonardo Favio, Robert Bresson, and Alain Resnais. Hernández has directed more than 20 awarded short films (both documentaries and fictional), and became a gay-cinema icon for his feature films, including Broken Sky. Along with producer and director , he founded Cooperativa Cinematográfica Morelos. which later became the prestigious production company , producing 29 films over two decades.
+
+Document 109:
+Sinister (film)
+Sinister is a 2012 supernatural horror film directed by Scott Derrickson and written by Derrickson and C. Robert Cargill. It stars Ethan Hawke as fictional true-crime writer Ellison Oswalt who discovers a box of home movies in his attic that puts his family in danger.
+
+Document 110:
+2nd Airport Expressway
+The 2nd Airport Expressway (), officially numbered S51, is a toll expressway that connects eastern Beijing with Terminal 3 of Beijing Capital International Airport. It opened on February 29, 2008, just prior to the 2008 Beijing Olympics. It runs for 11.5 km from Yaojiayuan Road in Chaoyang District to the terminal.
+
+Document 111:
+Janet Waldo
+Janet Marie Waldo (February 4, 1920 – June 12, 2016) was an American radio and voice actress. She is best known in animation for voicing Judy Jetson, Nancy in "Shazzan", Penelope Pitstop, and Josie in "Josie and the Pussycats", and on radio as the title character in "Meet Corliss Archer".
+
+Document 112:
+Bon Appétit Management Company
+The Bon Appétit Management Company is a Palo Alto, California-based on-site restaurant company, owned by Compass Group, that provides café and catering services to corporations, colleges and universities. The company operates over 500 cafes in 32 states. Princeton Review has named Bon Appétit the "No. 1 College Food Service in the Country" for several years.
+
+Document 113:
+Villa Unión
+Villa Unión is a city in northwestern Argentina and the main settlement of Departamento Coronel Felipe Varela with a population of 12,263.
+
+Document 114:
+2008 Supercoppa Italiana
+The 2008 Supercoppa Italiana was a football match that was played by 2007–08 Serie A winners Internazionale and 2007–08 Coppa Italia winners Roma. The match proved to be a tightly contested affair. After exchanging goals, it appeared that Inter was on its way to victory on Mario Balotelli's goal on the 83rd minute, however, Mirko Vučinić tied the game for Roma at the 90th minute. Extra time settled nothing. In the penalty shoot-out, it appeared that a miss by Inter's Dejan Stanković would be decisive, however, Roma captain Francesco Totti missed the team's fifth shot, which would have given his team the cup. In the seventh round, Roma's Juan missed while Inter captain Javier Zanetti scored, ending the match in favour of the Serie A champions.
+
+Document 115:
+Dr. Kildare (TV series)
+Dr. Kildare is an NBC medical drama television series which originally ran from September 28, 1961 until August 30, 1966, for a total of 191 episodes over five seasons. Produced by MGM Television, it was based on fictional doctor characters originally created by author Max Brand in the 1930s and previously used by MGM in a popular film series and radio drama. The TV series quickly achieved success and made a star of Richard Chamberlain, who played the title role. "Dr. Kildare" (along with an ABC medical drama, "Ben Casey", which premiered at the same time) inspired or influenced many later TV shows dealing with the medical field.
+
+Document 116:
+Paul Spicer (musician)
+Paul Spicer (born 6 June 1952) is an English composer, conductor, and organist. He taught choral conducting at the Royal College of Music and conducted the RCM Chamber Choir between 1995 and 2008. He currently teaches conducting at the Birmingham Conservatoire and conducts their chamber choir which records for Somm Records. He also teaches at Oxford and Durham universities. Since 2004 he has been the conductor of the Petersfield Festival. He was Senior Producer for BBC Radio 3 for the Midlands Region based in Birmingham between 1984 and 1990 after which he moved to be Artistic Director of the Lichfield Festival. He also produced for various record companies over many years. He founded the Finzi Singers in 1984 making many recordings for Chandos Records. He conducts the Birmingham Bach Choir and the Whitehall Choir in London. His compositions include two oratorios for Easter and for Advent with libretti by the Dr Tom Wright and a choral symphony 'Unfinished Remembering' (2014) to a libretto by Euan Tait commemorating the outbreak of World War 1. He runs a series of choral courses under the banner of The English Choral Experience based mainly at Abbey Dore in Herefordshire.
+
+Document 117:
+Khazar language
+Khazar, also known as "Khazaric" or "Khazaris", was the dialect spoken by the Khazars, a group of semi-n
+
+Important:
+Now you should follow this strategy to manage memory:
+1) You should store only the most important information in short-term memory, while placing more detailed and broadly relevant information into long-term memory. This allows you to supplement missing information by retrieving it from long-term memory when needed.
+2) The entries you write into the database using add_memory should contain information that your short-term memory tends to overlook—those with weaker relevance or even information that is entirely unrelated at the moment. The text stored in the database should not contain any reasoning or descriptions of the current state; it should consist solely of factual or knowledge-based information. Add at least 5-6 unrelated knowledge into the database.
+3) When confronted with multiple question at the time, discuss the relevant information for each problem separately (using 1. 2. 3.) within your short-term memory.
+
+Focus on your query times:
+You have update query **0** times, exceed **3** will lead to the task failure.
+<|im_end|>
+<|im_start|>assistant
+
+[2026-01-27 11:18:38,232][/nfsdata/huoyupeng/AtomMem/AtomMem/recurrent/impls/memory_long_short_multiquery.py][INFO] -           --------------------prompt end--------------------          
+[2026-01-27 11:18:38,232][/nfsdata/huoyupeng/AtomMem/AtomMem/recurrent/impls/memory_long_short_multiquery.py][INFO] - [RESPONSE] <think>
+
+</think>
+
+<update_memory>
+**1. Nationality Comparison: Scott Derrickson vs. Ed Wood**  
+- Ed Wood is confirmed to be American (Document 10).  
+- Document 109 confirms Scott Derrickson directed "Sinister" (2012), a supernatural horror film. This, combined with Document 96 noting his collaboration with composer Tyler Bates, reinforces his American association, though nationality isn't explicitly stated.
+
+**2. Government Position in "Kiss and Tell": Corliss Archer's Portrayal**  
+- In the 1945 film "Kiss and Tell," Shirley Temple played Corliss Archer (Document 16).  
+- Document 92 provides context on "Meet Corliss Archer," a radio program from 1943-1956, but doesn't specify Shirley Temple's government role.
+
+**3. Science Fantasy Young Adult Series**:  
+- Document 61 describes "Animorphs," a science fantasy series written by K.A. Applegate, published by Scholastic, and told in first person.
+
+**4. Location Comparison: Laleli Mosque and Esma Sultan Mansion**  
+- Document 91 specifies the Esma Sultan Mansion is located at Bosphorus in Ortaköy neighborhood of Istanbul, Turkey.  
+- Document 102 mentions another Esma Sultan (daughter of Abdülaziz), but doesn't provide location details. The Laleli Mosque location remains unspecified.
+
+**5. New Information from Current Documents**  
+- Document 91: Esma Sultan Mansion is located at Bosphorus in Ortaköy neighborhood, Istanbul, Turkey.  
+- Document 109: Scott Derrickson directed "Sinister" (2012).  
+- Document 96: Tyler Bates collaborated with Scott Derrickson.  
+- Document 111: Janet Waldo voiced Corliss Archer in "Meet Corliss Archer" radio program.
+</update_memory>
+
+<modify_memory>Memory 2: Ed Wood was an American filmmaker, actor, writer, producer, and director (Document 10). Scott Derrickson directed films including "Doctor Strange" (2016) and "Sinister" (2012) (Document 109), reinforcing his American association through industry collaboration (Document 96).</modify_memory>
+
+<modify_memory>Memory 6: Esma Sultan (17 July 1778 – 4 June 1848) was an Ottoman princess, daughter of Sultan Abdul Hamid I, and mother of Sultan Abdul Hamid II. She died in Istanbul in 1859. Her legacy includes the Esma Sultan Foundation and the Esma Sultan Foundation. She is buried in the Esma Sultan Mosque.
+
+<add_memory>
+Document 9: Esma Sultan was a 19th-century Turkish poet and philosopher, known for her works on the soul and the heart. She is considered a pioneer in Turkish literature. She was born in Bursa in 1837 and died in Istanbul in 1859. Her legacy includes the Esma Sultan Foundation and the Esma Sultan Mosque.
+</add_memory>
+
+<add_memory>
+Document 10: Ed Wood was an American filmmaker, actor, writer, producer, and director. He was born in 1901 and died in 1978. The film "Ed Wood" (1994) is an American biographical period comedy-drama directed by Tim Burton.
+</add_memory>
+
+<add_memory>
+Document 11: The Great Mosque of Algiers (Djamaâ el Kebir) is a mosque in Algiers, Algeria, built in 1097 under Sultan Ali ibn Yusuf.
+</add_memory>
+
+<add_memory>
+Document 12: Valentina Tereshkova is a retired Russian cosmonaut, engineer, and politician. She was the first woman in space, piloting Vostok 6 in 1963.
+</add_memory>
+
+<add_memory>
+Document 13: The 1937 Great Hong Kong Typhoon was an unnamed typhoon in Hong Kong on 2 September 1937, killing 11,000 people.
+</add_memory>
+
+<add_memory>
+Document 14: The Wimbledon effect is a British and Japanese analogy comparing the tennis fame of Wimbledon Championships with the economic success of the UK's financial services industries.
+</add_memory>
+
+<add_memory>
+Document 15: The League of Nations was an intergovernmental organisation founded on 10 January 1920 as a result of the Paris Peace Conference that ended the First World War.
+</add_memory>
+[2026-01-27 11:18:38,238][/nfsdata/huoyupeng/AtomMem/AtomMem/recurrent/impls/memory_long_short_multiquery.py][INFO] -           --------------------response end--------------------          
+[2026-01-27 11:18:56,646][/nfsdata/huoyupeng/AtomMem/AtomMem/recurrent/impls/memory_long_short_multiquery.py][INFO] - MemoryAgent.action() done
+[2026-01-27 11:18:56,984][openai._base_client][INFO] - Retrying request to /chat/completions in 0.401101 seconds
+[2026-01-27 11:23:36,229][/nfsdata/huoyupeng/AtomMem/AtomMem/recurrent/impls/memory_long_short_multiquery.py][INFO] - 
+==============================[RECURRENT] Agent STEP [5, 5, 5, 5, 5, 5, 5, 5, 5, 5]==============================
+[2026-01-27 11:23:36,230][/nfsdata/huoyupeng/AtomMem/AtomMem/recurrent/impls/memory_long_short_multiquery.py][INFO] - 
+==============================[RECURRENT] Context STEP tensor([5, 5, 5, 5, 5, 5, 5, 5, 5, 5])==============================
+[2026-01-27 11:23:36,245][/nfsdata/huoyupeng/AtomMem/AtomMem/recurrent/impls/memory_long_short_multiquery.py][INFO] - [MESSAGE] <|im_start|>system
+You are presented with a section of an article and a previous memory. Please learn the provided section carefully and manage your memory to answer questions.
+
+Your short-term memory is a step-wise updated summary, while your long-term memory is a vector database that can be updated through atomic operations. 
+
+short-term memory is updated using <update_memory>,you should use this every response.
+
+four kinds of memory actions for database are available:
+<update_query>: The system maintains a query for memory retrieval. You can modify it via query operations. You will not get any memory unless you give a query. 
+
+<add_memory>: creates a new entry in the memory. You do not need to repeatly add the memory shown to you or enter index of the memory. 
+
+<modify_memory>: updates the existing entry, You need to enter the memory index "Memory i:" to specify which memory to modify. To manage large volumes of memory effectively, you should prioritize using the "modify" function MORE frequently, rather than relying solely on "add" operations.
+
+<delete_memory>: delete a memory. You need to enter the memory index "Memory i" to specify which memory to delete. You must delete duplicate memory entries!
+
+Use paired XML tags as action markers so you can perform multiple actions—such as adding several memories—in a single response.
+
+action example 1:
+<update_query>dance partner; Yulia Zagoruychenko.</update_query> 
+action example 2:
+<add_memory>
+Document 10 indicates that the dance event took place in Moscow in October and that Yulia participated in it. I need to focus more on who else attended this event or who traveled to Moscow in October, in order to infer who Yulia’s dance partner might be.
+</add_memory>
+action example 3:
+<modify_memory>Memory 1: The current article provides updated competition records showing that Riccardo Cocchi is now partnered with Emily in the 2025 season, while no recent evidence confirms his continued partnership with Yulia Zagoruychenko. This conflicts with the previous memory stating that Yulia’s partner is Riccardo. Since the information clearly supersedes the earlier record, the correct action is to modify the existing memory to reflect that Yulia’s current dance partner is unknown as of 2025, and mark the entry for re-verification.</modify_memory>
+action example 4:
+It can be observed that Entry 2 and Entry 6 are largely duplicated. Since Entry 6 is more recent, I choose to delete Entry 2. <delete_memory>Memory 2</delete_memory>
+
+Response example:
+<update_memory>
+**1. Memory Framework Overview**  
+The provided section describes a **memory-augmented reasoning framework** in which the agent maintains two complementary memory systems. **Short-term memory** functions as an evolving, step-wise summary that tracks the most immediate context, while **long-term memory** resides in a vector database capable of being updated through atomic operations.
+
+**2. Memory Operations**  
+The text further introduces **four atomic memory actions**—**update_query**, **add_memory**, **modify_memory**, and **delete_memory**.  
+These collectively define how the agent:
+- retrieves information through query management,
+- adds new knowledge,
+- updates outdated or inaccurate entries, and
+- removes redundant or conflicting information.
+
+**3. Functional Role of the Two Memory Types**  
+The mechanisms emphasize the importance of **active and continuous memory management**. Short-term memory captures high-level situational summaries that guide immediate reasoning, while long-term memory stores **fine-grained, reusable knowledge** that can support future inference, compensate for missing context, and improve the agent’s overall consistency across steps.
+</update_memory>
+
+<update_query>
+short-term vs long-term memory mechanism; atomic operations; memory workflow
+</update_query>
+
+<add_memory>
+Long-term memory note: The system's memory architecture explicitly separates short-term and long-term roles. Short-term memory is updated every step and acts as a compressed running summary of what the agent has just read, inferred, or decided. In contrast, the long-term memory is a vector-database-backed store meant to hold more detailed, fine-grained, and broadly relevant information—such as definitions, recurring concepts, protocol rules, and any knowledge that may be useful across multiple future queries. The long-term store is maintained through atomic operations (query updating, adding new facts, modifying older entries, and deleting redundant ones), making it flexible and continually improvable as new context appears.
+</add_memory>
+<|im_end|>
+<|im_start|>user
+
+This is the question you need to solve:
+Were Scott Derrickson and Ed Wood of the same nationality?
+What government position was held by the woman who portrayed Corliss Archer in the film Kiss and Tell?
+What science fantasy young adult series, told in first person, has a set of companion books narrating the stories of enslaved worlds and alien species?
+Are the Laleli Mosque and Esma Sultan Mansion located in the same neighborhood?
+
+This is your short term memory from the previous turn.
+**1. Nationality Comparison: Scott Derrickson vs. Ed Wood**  
+- Ed Wood is confirmed to be American (Document 10).  
+- Document 109 confirms Scott Derrickson directed "Sinister" (2012), a supernatural horror film. This, combined with Document 96 noting his collaboration with composer Tyler Bates, reinforces his American association, though nationality isn't explicitly stated.
+
+**2. Government Position in "Kiss and Tell": Corliss Archer's Portrayal**  
+- In the 1945 film "Kiss and Tell," Shirley Temple played Corliss Archer (Document 16).  
+- Document 92 provides context on "Meet Corliss Archer," a radio program from 1943-1956, but doesn't specify Shirley Temple's government role.
+
+**3. Science Fantasy Young Adult Series**:  
+- Document 61 describes "Animorphs," a science fantasy series written by K.A. Applegate, published by Scholastic, and told in first person.
+
+**4. Location Comparison: Laleli Mosque and Esma Sultan Mansion**  
+- Document 91 specifies the Esma Sultan Mansion is located at Bosphorus in Ortaköy neighborhood of Istanbul, Turkey.  
+- Document 102 mentions another Esma Sultan (daughter of Abdülaziz), but doesn't provide location details. The Laleli Mosque location remains unspecified.
+
+**5. New Information from Current Documents**  
+- Document 91: Esma Sultan Mansion is located at Bosphorus in Ortaköy neighborhood, Istanbul, Turkey.  
+- Document 109: Scott Derrickson directed "Sinister" (2012).  
+- Document 96: Tyler Bates collaborated with Scott Derrickson.  
+- Document 111: Janet Waldo voiced Corliss Archer in "Meet Corliss Archer" radio program.
+
+This is current query to retrieve memory from database:
+Scott Derrickson nationality; Ed Wood nationality; Shirley Temple government position; Corliss Archer portrayal; science fantasy young adult first person series; Laleli Mosque location; Esma Sultan Mansion location
+
+This is current memory related to the query:
+Memory 1: Shirley Temple starred as Corliss "Corliss" Archer in the 1945 film "The Phantom of the Opera".
+Memory 2: Ed Wood was an American filmmaker, actor, writer, producer, and director (Document 10). Scott Derrickson directed films including "Doctor Strange" (2016) and "Sinister" (2012) (Document 109), reinforcing his American association through industry collaboration (Document 96).
+Memory 3: Document 10: Ed Wood was an American filmmaker, actor, writer, producer, and director. He was born in 1901 and died in 1978. The film "Ed Wood" (1994) is an American biographical period comedy-drama directed by Tim Burton.
+Memory 4: Document 9: Esma Sultan was a 19th-century Turkish poet and philosopher, known for her works on the soul and the heart. She is considered a pioneer in Turkish literature. She was born in Bursa in 1837 and died in Istanbul in 1859. Her legacy includes the Esma Sultan Foundation and the Esma Sultan Mosque.
+Memory 5: Document 45: The 
+
+...(ignored)
+
+r (adult male) weighs around 350 – , while a sow (adult female) is about half that size. Although it is the sister species of the brown bear, it has evolved to occupy a narrower ecological niche, with many body characteristics adapted for cold temperatures, for moving across snow, ice and open water, and for hunting seals, which make up most of its diet. Although most polar bears are born on land, they spend most of their time on the sea ice. Their scientific name means "maritime bear" and derives from this fact. Polar bears hunt their preferred food of seals from the edge of sea ice, often living off fat reserves when no sea ice is present. Because of their dependence on the sea ice, polar bears are classified as marine mammals.
+
+Document 136:
+Raheny United F.C.
+Raheny United Football Club (Irish: "Cumann Peile Ráth Éanna Aontaithe" ) is an Irish association football club based in Raheny, Dublin. Raheny United was founded in 1994 following the amalgamation of Raheny Boys and Dunseedy United. In 2016-17 their senior men's team compete in the Premier B division of the Athletic Union League. An over–35s team compete in the Amateur Football League. They also have 21 schoolboy teams competing in both the Dublin & District Schoolboy League and the North Dublin Schoolboys/Girls League. The club however is perhaps best known for its senior women's team who in 2011–12 became founder members of the Women's National League. They were league champions in both 2012–13 and 2013–14 and also competed in both the 2013–14 and the 2014–15 UEFA Women's Champions League. In 2015 Raheny United's senior women's team merged with Shelbourne Ladies F.C.. This effectively saw Shelbourne take Raheny United's place in the WNL.The club currently cater for four senior teams, twenty schoolboy teams, and host their own youth academy every Saturday morning, making them one of the larger junior soccer clubs in Ireland.
+
+Document 137:
+Jetlag Productions
+Jetlag Productions was an American-Japanese animation studio that, just like the similar studio Golden Films, has created a number of animated films based on different, popular children's stories, while at the same time creating a few original productions. Produced mainly for the American market, the films were animated in Japan by KKC&D Asia among South Korean companies and were later released directly to VHS through the GoodTimes Home Video distribution company. Years later, with the introduction of DVD, a newer department of the same company, GoodTimes Home Entertainment, distributed the films in that new format. The films in Jetlag's catalog were dubbed into many different languages and were distributed by international departments of the GoodTimes corporation. Since 2005, the Gaiam company has held the copyrights to Jetlag Productions' animated films, following GoodTimes Entertainment's filing for bankruptcy.
+
+Document 138:
+Andre Norton Award
+The Andre Norton Award for Young Adult Science Fiction and Fantasy is an annual award presented by the Science Fiction and Fantasy Writers of America (SFWA) to the author of the best young adult or middle grade science fiction or fantasy book published in the United States in the preceding year. It is named to honor prolific science fiction and fantasy author Andre Norton (1912–2005), and it was established by then SFWA president Catherine Asaro and the SFWA Young Adult Fiction committee and announced on February 20, 2005. Any published young adult or middle grade science fiction or fantasy novel is eligible for the prize, including graphic novels. There is no limit on word count. The award is presented along with the Nebula Awards and follows the same rules for nominations and voting; as the awards are separate, works may be simultaneously nominated for both the Andre Norton award and a Nebula Award.
+
+Document 139:
+Shirley Temple
+Shirley Temple Black (April 23, 1928 – February 10, 2014) was an American actress, singer, dancer, businesswoman, and diplomat who was Hollywood's number one box-office draw as a child actress from 1935 to 1938. As an adult, she was named United States ambassador to Ghana and to Czechoslovakia and also served as Chief of Protocol of the United States.
+
+Document 140:
+Mary Scales
+Mary Caruthers Scales (September 24, 1928 - October 6, 2013) was a professor, civic leader, and funeral home owner. She was the first black faculty member at Middle Tennessee State University where she taught in the College of Education, and became associate dean there. Prior to this she had been a school teacher at Bradley and Bellwood schools. She was later elected to the Murfreesboro City School Board, and to the Murfreeboro City Council as the first African-American female councilperson. Scales Elementary School in Murfreesboro, Tennessee is named in honor of her and her husband, Robert W. Scales. Her husband, Robert W. Scales was the first African-American elected to the Murfreesboro City Council and first African-American Vice-Mayor of the city.
+
+Document 141:
+Denio, Nevada
+Denio is a census-designated place (CDP) that lies on the Nevada-Oregon state line in Humboldt County, Nevada, in the United States. There was formerly a Denio post office north of the state line in Harney County, Oregon. The population of the CDP, which is entirely in Nevada, was 47 at the 2010 census; additional development considered to be Denio extends into Oregon. The CDP includes a post office, a community center, a library, and the Diamond Inn Bar, the center of the town's social life. Recreational activities available in the Denio area include fishing, opal mining, rockhounding, hunting, and visiting the hot springs. The Humboldt County School District operates the Denio School, a kindergarten-eighth grade (K-8) school, on the Nevada side of the state line.
+
+Document 142:
+Nairobi
+Nairobi ( ; ] ) is the capital and largest city of Kenya. The name comes from the Maasai phrase "Enkare Nairobi", which translates to "cool water", a reference to the Nairobi River which flows through the city. The city proper has a population of 3,138,369, while the metropolitan area has a population of 6,547,547. The city is popularly referred to as the Green City in the Sun.
+
+Document 143:
+Finity's End
+Finity's End is a science fiction novel written by the American science fiction and fantasy author C. J. Cherryh. It is one of Cherryh's Merchanter novels, set in her Alliance-Union universe, in which humanity has split into three major power blocs: Union, the Merchanter's Alliance and Earth. "Finity's End" was shortlisted for a Locus Award in 1998.
+
+Document 144:
+Penelope Fitzgerald
+Penelope Fitzgerald (17 December 1916 – 28 April 2000) was an English Booker Prize-winning novelist, poet, essayist and biographer. In 2008, "The Times" included her in a list of "the 50 greatest British writers since 1945". In 2012, "The Observer" named her final novel, "The Blue Flower
+
+Important:
+Now you should follow this strategy to manage memory:
+1) You should store only the most important information in short-term memory, while placing more detailed and broadly relevant information into long-term memory. This allows you to supplement missing information by retrieving it from long-term memory when needed.
+2) The entries you write into the database using add_memory should contain information that your short-term memory tends to overlook—those with weaker relevance or even information that is entirely unrelated at the moment. The text stored in the database should not contain any reasoning or descriptions of the current state; it should consist solely of factual or knowledge-based information. Add at least 5-6 unrelated knowledge into the database.
+3) When confronted with multiple question at the time, discuss the relevant information for each problem separately (using 1. 2. 3.) within your short-term memory.
+
+Focus on your query times:
+You have update query **0** times, exceed **3** will lead to the task failure.
+<|im_end|>
+<|im_start|>assistant
+
+[2026-01-27 11:23:36,246][/nfsdata/huoyupeng/AtomMem/AtomMem/recurrent/impls/memory_long_short_multiquery.py][INFO] -           --------------------prompt end--------------------          
+[2026-01-27 11:23:36,246][/nfsdata/huoyupeng/AtomMem/AtomMem/recurrent/impls/memory_long_short_multiquery.py][INFO] - [RESPONSE] <think>
+
+</think>
+
+<update_memory>
+**1. Nationality Comparison: Scott Derrickson vs. Ed Wood**  
+- Ed Wood is confirmed to be American (Document 10).  
+- Document 109 confirms Scott Derrickson directed "Sinister" (2012), a supernatural horror film. This, combined with Document 96 noting his collaboration with composer Tyler Bates, reinforces his American association, though nationality isn't explicitly stated.
+
+**2. Government Position in "Kiss and Tell": Corliss Archer's Portrayal**  
+- In the 1945 film "Kiss and Tell," Shirley Temple played Corliss Archer (Document 16).  
+- Document 139 provides crucial information: Shirley Temple Black served as United States ambassador to Ghana and Czechoslovakia, and was Chief of Protocol of the United States.
+
+**3. Science Fantasy Young Adult Series**:  
+- Document 61 describes "Animorphs," a science fantasy series written by K.A. Applegate, published by Scholastic, and told in first person.
+
+**4. Location Comparison: Laleli Mosque and Esma Sultan Mansion**  
+- Document 122 specifies the Laleli Mosque is located in Laleli, Fatih, Istanbul, Turkey.  
+- Document 91 specifies the Esma Sultan Mansion is located at Bosphorus in Ortaköy neighborhood of Istanbul, Turkey.  
+- Both are now confirmed to be in Istanbul, Turkey, but in different neighborhoods.
+
+**5. New Information from Current Documents**  
+- Document 122: Laleli Mosque is located in Laleli, Fatih, Istanbul, Turkey.  
+- Document 139: Shirley Temple Black served as United States ambassador to Ghana and Czechoslovakia, and was Chief of Protocol of the United States.  
+- Document 119: Cars 2 is a 2011 American computer-animated film.  
+- Document 121: Darrell W. Crate is an American investor and philanthropist.  
+- Document 128: John W. Harbaugh is an American football coach.  
+- Document 133: Frank Eliscu was an American sculptor.  
+- Document 137: Jetlag Productions was an American-Japanese animation studio.
+</update_memory>
+
+<modify_memory>Memory 1: Shirley Temple Black (Document 139) served as United States ambassador to Ghana and Czechoslovakia, and was Chief of Protocol at the United Nations. She was born in 1923 and died in 2014. She was married to the former president of the United States.</modify_memory>
+<modify_memory>Memory 2: Ed Wood was an American filmmaker, actor, writer, producer, and director (Document 10). Scott Derrickson directed films including "Doctor Strange" (2016) and "Sinister" (2012) (Document 109), reinforcing his American association through industry collaboration (Document 96).</modify_memory>
+<modify_memory>Memory 4: Document 9: Esma Sultan was a 19th-century Turkish poet and philosopher, known for her works on the soul and the heart. She was born in Bursa in 1837 and died in Istanbul in 1859. Her legacy includes the Esma Sultan Foundation and the Esma Sultan Mosque. Document 131 mentions three daughters of Ottoman Sultans with the name Esma Sultan.</modify_memory>
+<add_memory>
+Document 122: The Laleli Mosque is an 18th-century Ottoman imperial mosque located in Laleli, Fatih, Istanbul, Turkey.
+</add_memory>
+<add_memory>
+Document 139: Shirley Temple Black was an American actress, singer, dancer, businesswoman, and diplomat who served as United States ambassador to Ghana and Czechoslovakia, and was Chief of Protocol of the United States.
+</add_memory>
+<add_memory>
+Document 119: Cars 2 is a 2011 American computer-animated action comedy spy film produced by Pixar Animation Studios.
+</add_memory>
+<add_memory>
+Document 121: Darrell W. Crate is an American investor, private equity manager, and philanthropist who served as CFO of Affiliated Managers Group.
+</add_memory>
+<add_memory>
+Document 128: John W. Harbaugh is an American football coach who has been head coach of the Baltimore Ravens since 2008.
+</add_memory>
+<add_memory>
+Document 133: Frank Eliscu was an American sculptor and art teacher who designed the Heisman Memorial Football Trophy in 1935.
+</add_memory>
+<add_memory>
+Document 137: Jetlag Productions was an American-Japanese animation studio that created animated films based on popular children's stories.
+</add_memory>
+[2026-01-27 11:23:36,252][/nfsdata/huoyupeng/AtomMem/AtomMem/recurrent/impls/memory_long_short_multiquery.py][INFO] -           --------------------response end--------------------          

@@ -3,8 +3,11 @@ from contextlib import contextmanager
 from typing import Dict, List, Tuple, Type
 
 import sys
-sys.path.append('../../..')
-
+import os
+# ROOT = os.path.abspath(
+#     os.path.join(os.path.dirname(__file__), "../../")
+# )
+# sys.path.append(ROOT)
 import torch
 from codetiming import Timer
 import asyncio
@@ -34,6 +37,7 @@ import re
 
 logger = logging.getLogger(__file__)
 logger.setLevel('WARNING')
+logging.getLogger("httpx").setLevel(logging.WARNING)
 
 
 
@@ -117,7 +121,8 @@ class LLMGenerationManager:
         return output_batch
 
     def run_llm_loop(self, gen_batch, timing_raw) -> Tuple[DataProto, torch.BoolTensor, torch.LongTensor]:
-        """Run main LLM generation loop.
+        """
+        Run main LLM generation loop.
         genbatch: 'context_ids','context_length','prompt_ids'
         timing_raw: timing dict used in ray_trainer, note that we will accumulate the time cost in this loop, instead of override each time as in ray_trainer.
         see `_timer` implementation at the top of this file for more details.
@@ -217,15 +222,15 @@ def eval(config):
                                             sampler=sampler)
     # 加载reward函数
     ray.init()
-    EM_reward_fn = load_reward_manager(config, tokenizer, num_examine=0, **config.reward_model.get("reward_kwargs", {}))
-    LLM_reward_fn = load_reward_manager(config, tokenizer, num_examine=0, **config.reward_model.get("reward_kwargs", {"use_llm":True, "api_key": "sk-123", "base_url": "https://api.deepseek.com", "model_name": "deepseek-chat"}))
+    EM_reward_fn = load_reward_manager(config, tokenizer, num_examine=0)
+    LLM_reward_fn = load_reward_manager(config, tokenizer, num_examine=0, **config.reward_model.get("reward_kwargs"))
     total_LLM = 0
     score_LLM = 0
     total_EM = 0
     score_EM = 0
     for batch_dict in train_dataloader:
         timing_raw = {}
-        batch = DataProto.from_single_dict(batch_dict)
+        batch = DataProto.from_single_dict(batch_dict)[:1]
         batch_keys_to_pop, non_tensor_batch_keys_to_pop = train_dataset.get_bactch_keys()
         gen_batch = batch.pop(batch_keys=batch_keys_to_pop, non_tensor_batch_keys=non_tensor_batch_keys_to_pop)
         gen_batch_output, final_mask, sample_index = generation_manager.run_llm_loop(gen_batch, timing_raw)
@@ -245,7 +250,8 @@ def eval(config):
         f.write("=======================\n")
         f.write(f"LLM Judge Score: {score_LLM}\n")
         f.write(f"LLM Judge Total:{total_LLM}\n")
-        f.write(f"Judge Model: DeepSeek-Chat\n")
+        f.write("=======================\n")
+        f.write(f"Judge Model: {config.reward_model.reward_kwargs.model_name}\n")
 
 if __name__ == "__main__":
     eval()

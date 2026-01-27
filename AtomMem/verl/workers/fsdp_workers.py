@@ -546,7 +546,6 @@ class ActorRolloutRefWorker(Worker):
             "pad_token_id": self.generation_config.pad_token_id if self.generation_config is not None else self.tokenizer.pad_token_id,
         }
         offload = prompts.meta_info.get("offload", True)
-        print("offload:", offload)
         prompts.meta_info.update(meta_info)
         self.rollout_sharding_manager.offload = offload
         with self.rollout_sharding_manager:

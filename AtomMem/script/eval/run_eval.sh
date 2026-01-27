@@ -1,9 +1,9 @@
 #!/bin/bash
 set -euo pipefail
 
-DATASET_ROOT=
+DATASET_ROOT=.
 
-MODEL_PATH=
+MODEL_PATH=/nfsdata/models/Qwen3-8B
 
 VLLM_PORT=9007
 
@@ -20,6 +20,7 @@ done
 
 # ======== hotpotqa ============== 
 # ========= hotpotqa 200doc ===========
+# fill the api_key and base_url to determine the judge model, in our impletation the judge model is deepseek-V3.1.
 python3 -X faulthandler -m script.eval.eval \
     recurrent.enable=memory \
     recurrent.memory.config.chunk_size=4000 \
@@ -28,12 +29,16 @@ python3 -X faulthandler -m script.eval.eval \
     +recurrent.memory.config.max_long_mem_length=2048 \
     +recurrent.memory.config.max_short_mem_length=2048 \
     recurrent.memory.path='recurrent/impls/memory_long_short_multiquery.py' \
-    data.train_files=${DATASET_ROOT}/taskutils/memory_data/hotpotqa_multiquery_dev_filtered.parquet \
-    data.val_files=${DATASET_ROOT}/taskutils/memory_data/hotpotqa_multiquery_dev_filtered.parquet \
+    data.train_files=${DATASET_ROOT}/taskutils/memory_data/hotpotqa_dev_multiquery.parquet \
+    data.val_files=${DATASET_ROOT}/taskutils/memory_data/hotpotqa_dev_multiquery.parquet \
     data.train_batch_size=200 \
     data.truncation='center' \
     actor_rollout_ref.model.path=$MODEL_PATH  \
     reward_model.reward_manager='thread_agent' \
-    +log_path='' \
+    +log_path=${DATASET_ROOT}/log/hotpotqa_dev.txt \
     +model_name="AtomMem" \
-    +base_url="http://localhost:8001/v1/"
+    +base_url="http://localhost:8001/v1/" \
+    +reward_model.reward_kwargs.use_llm=true \
+    +reward_model.reward_kwargs.base_url="https://api.deepseek.com" \
+    +reward_model.reward_kwargs.api_key="sk-5bdddb7f2c7949659bb2806441bd6f3b" \
+    +reward_model.reward_kwargs.model_name="deepseek-chat" \

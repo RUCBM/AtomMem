@@ -26,12 +26,10 @@ conda activate AtomMem
 ```
 
 #### install dependencies
+**Note:** First install torch based on your requirement, torch 2.7.1 is verified, then
 ```
-pip install torch
-pip install xformers --no-build-isolation
 pip install -r requirements.txt
 ```
-**Note:** If you plan to run training, please ensure that the vLLM version is **below 0.9.2**. Otherwise, on an 8-GPU server, the embedding model will occupy an entire GPU, leaving only 7 GPUs available for training.
 
 ### Data Preparation
 
@@ -48,9 +46,9 @@ Place the dataset under the **taskutils/memory_data** directory, organized in th
 ```
 **2.** run the following command of specific dataset.
 ```
-./AtomMem/taskutils/script/HotpotQA.sh
-./AtomMem/taskutils/script/2Wiki.sh
-./AtomMem/taskutils/script/Musique.sh
+./taskutils/script/HotpotQA.sh
+./taskutils/script/2Wiki.sh
+./taskutils/script/Musique.sh
 ```
 
 ### Inference
@@ -67,7 +65,7 @@ vllm serve your_model_path --served_model_name AtomMem --port 8001
 
 **3.** start the embedding vllm service on port 9007
 ```
-vllm serve your_embedding_model_path --served_model_name qwen3-embedding --task_embed --port 9007
+CUDA_VISIBLE_DEVICES=1 vllm serve your_embedding_model_path --served_model_name qwen3-embedding --task_embed --port 9007
 ```
 
 **4.** run the following script to inference on our tasks
@@ -100,6 +98,17 @@ We build upon Verl v0.2.0 and extend the framework to support multi-turn reinfor
 ```
 
 To quickly run RL training, please execute the following script:
+
+**1.** Start the embedding vllm service on port 9007
+```
+vllm serve your_embedding_model_path --served_model_name qwen3-embedding --task_embed --port 9007
+```
+**Note:** We recommend creating a new environment and installing vLLM to launch embedding service, ensuring that the vLLM version is **below 0.8.5**. Otherwise, on an 8-GPU server, the embedding model may fully occupy one GPU, leaving only 7 GPUs available for training.
+
+**2.** run training script
 ```
 ./script/train/run_memory_longcontext.sh
 ```
+
+## 🙏 Acknowledgements
+This code is adapted from the [verl](https://github.com/verl-project/verl) framework and the [MemAgent](https://github.com/BytedTsinghua-SIA/MemAgent) implementation. We sincerely appreciate their contributions.

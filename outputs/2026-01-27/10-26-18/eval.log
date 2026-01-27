@@ -1,0 +1,6 @@
+[2026-01-27 10:26:18,766][faiss.loader][INFO] - Loading faiss with AVX2 support.
+[2026-01-27 10:26:18,799][faiss.loader][INFO] - Successfully loaded faiss with AVX2 support.
+[2026-01-27 10:26:20,351][/nfsdata/huoyupeng/AtomMem/AtomMem/recurrent/impls/memory_long_short_multiquery.py][INFO] - 
+[RECURRENT] max_input_length: = 16288
+
+[2026-01-27 10:26:20,352][/nfsdata/huoyupeng/AtomMem/AtomMem/recurrent/impls/memory_long_short_multiquery.py][INFO] - chunk_size: 4000
