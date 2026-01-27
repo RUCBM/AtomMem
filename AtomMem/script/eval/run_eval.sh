@@ -3,7 +3,7 @@ set -euo pipefail
 
 DATASET_ROOT=.
 
-MODEL_PATH=/nfsdata/models/Qwen3-8B
+MODEL_PATH=YOUR_MODEL_PATH
 
 VLLM_PORT=9007
 

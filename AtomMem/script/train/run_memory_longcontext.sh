@@ -4,7 +4,6 @@ set -x
 NNODES=1
 NGPUS_PER_NODE=8
 PROJ_ROOT=.
-export RAY_TMPDIR=/nfsdata/huoyupeng/ray_tmp
 # enter your swanlab api_key to log the training metrics
 export SWANLAB_API_KEY=
 # enter your base model path
