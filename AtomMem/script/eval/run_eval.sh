@@ -40,5 +40,5 @@ python3 -X faulthandler -m script.eval.eval \
     +base_url="http://localhost:8001/v1/" \
     +reward_model.reward_kwargs.use_llm=true \
     +reward_model.reward_kwargs.base_url="https://api.deepseek.com" \
-    +reward_model.reward_kwargs.api_key="sk-5bdddb7f2c7949659bb2806441bd6f3b" \
+    +reward_model.reward_kwargs.api_key="" \
     +reward_model.reward_kwargs.model_name="deepseek-chat" \
