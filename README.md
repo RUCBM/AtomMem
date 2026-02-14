@@ -53,7 +53,7 @@ Place the dataset under the **taskutils/memory_data** directory, organized in th
 
 ### Inference
 
-**1.** download our model from huggingface or modelscope
+**1.** download our model from huggingface
 ```
 huggingface-cli download Yupeng123/AtomMem-8B --local-dir ./AtomMem-8B
 ```
