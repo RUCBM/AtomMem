@@ -6,6 +6,6 @@ python ./taskutils/script/processing_multiquery.py \
 
 python ./taskutils/script/processing_multiquery.py \
     --data_file 2wikimultihop_dev.json \
-    --data_size 1000 \
+    --data_size 600 \
     --doc_num 200 \
     --output ./taskutils/memory_data/2wiki_dev_multiquery.parquet
